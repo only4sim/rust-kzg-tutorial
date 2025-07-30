@@ -24,6 +24,10 @@ name = "chapter01_basics"
 path = "examples/chapter01_basics.rs"
 
 [[example]]
+name = "chapter02_kzg_deep_dive"
+path = "examples/chapter02_kzg_deep_dive.rs"
+
+[[example]]
 name = "hello_kzg"
 path = "examples/hello_kzg.rs"
 
