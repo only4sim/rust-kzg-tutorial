@@ -1,0 +1,32 @@
+[package]
+name = "rust-kzg-tutorial"
+version = "0.1.0"
+edition = "2021"
+authors = ["Rust KZG Tutorial Contributors"]
+description = "完整的 Rust KZG 密码学库教程与示例"
+readme = "README.md"
+repository = "https://github.com/your-username/rust-kzg-tutorial"
+license = "MIT"
+keywords = ["cryptography", "kzg", "polynomial", "commitment", "tutorial"]
+categories = ["cryptography", "tutorial", "development-tools"]
+
+[dependencies]
+# 使用官方发布的 rust-kzg 库
+rust-kzg-blst = { git = "https://github.com/grandinetech/rust-kzg.git", package = "rust-kzg-blst" }
+kzg = { git = "https://github.com/grandinetech/rust-kzg.git" }
+
+# 用于示例的其他依赖
+log = "0.4"
+env_logger = "0.10"
+
+[[example]]
+name = "chapter01_basics"
+path = "examples/chapter01_basics.rs"
+
+[[example]]
+name = "hello_kzg"
+path = "examples/hello_kzg.rs"
+
+[profile.release]
+opt-level = 3
+lto = "thin"
