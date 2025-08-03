@@ -50,27 +50,42 @@ pub const BLS12_381_FIELD_MODULUS: &str =
 - **配对友好**: 嵌入度 k=12，支持高效双线性配对
 - **性能优化**: 针对现代 64位架构优化
 
-```Rust
+#### 实际代码示例导入
+
+```rust
+// 第1章配套示例代码：椭圆曲线密码学基础操作
+// 本示例演示如何使用 Rust KZG 库进行基本的椭圆曲线操作
+
+use rust_kzg_blst::{types::fr::FsFr, types::g1::FsG1};
+use kzg::{Fr, G1, G1Mul};
+```
+
+### 🔢 标量域操作详解
+
+```rust
 /// 演示标量域 Fr 的基本操作
 fn demonstrate_scalar_operations() -> Result<(), String> {
     println!("\n📊 1.1 标量域 Fr 操作");
-    println!("-".repeat(30));
+    println!("{}", "-".repeat(30));
     
     // 创建标量元素
     let zero = FsFr::zero();         // 零元素
     let one = FsFr::one();          // 单位元素
     
-    println!("零元素: {:?}", zero.is_zero());
-    println!("单位元素: {:?}", one.is_one());
+    println!("零元素验证: {}", zero.is_zero());
+    println!("单位元素验证: {}", one.is_one());
     
-    // 从字节创建标量
-    let scalar_bytes = [1u8; 32];  // 32字节 = 256位
-    let scalar = FsFr::from_bytes(&scalar_bytes)?;
+    // 从字节创建标量 - 注意：需要确保字节数组表示有效的域元素
+    let mut scalar_bytes = [0u8; 32];
+    scalar_bytes[31] = 5; // 设置为小值，确保有效性
+    
+    let scalar = FsFr::from_bytes(&scalar_bytes)
+        .map_err(|e| format!("创建标量失败: {}", e))?;
     println!("从字节创建的标量: 成功");
     
     // 标量运算
-    let sum = one.add(&scalar);      // 加法
-    let product = scalar.mul(&scalar); // 乘法
+    let _sum = one.add(&scalar);      // 加法
+    let _product = scalar.mul(&scalar); // 乘法
     let inverse = scalar.inverse();   // 求逆
     
     println!("标量加法、乘法、求逆: 完成");
@@ -85,7 +100,7 @@ fn demonstrate_scalar_operations() -> Result<(), String> {
 /// 演示椭圆曲线点 G1 的基本操作
 fn demonstrate_point_operations() -> Result<(), String> {
     println!("\n📈 1.2 椭圆曲线点 G1 操作");
-    println!("-".repeat(30));
+    println!("{}", "-".repeat(30));
     
     // 获取生成元
     let generator = FsG1::generator();
@@ -96,16 +111,35 @@ fn demonstrate_point_operations() -> Result<(), String> {
     println!("无穷远点 O: 获取成功");
     
     // 点加法: G + G = 2G
-    let doubled_g = generator.add(&generator);
+    let _doubled_g = generator.add(&generator);
     println!("点加法 G + G: 完成");
     
-    // 点减法: 2G - G = G
-    let should_be_g = doubled_g.sub(&generator);
-    println!("点减法 2G - G = G: {}", should_be_g.equals(&generator));
+    // 点减法验证: 验证椭圆曲线群的性质
+    // 使用更加明确的方法验证 2G - G = G
+    let mut scalar_2_bytes = [0u8; 32];
+    scalar_2_bytes[31] = 2;
+    let scalar_2 = FsFr::from_bytes(&scalar_2_bytes)
+        .map_err(|e| format!("创建标量2失败: {}", e))?;
+    
+    let mut scalar_1_bytes = [0u8; 32];
+    scalar_1_bytes[31] = 1;
+    let scalar_1 = FsFr::from_bytes(&scalar_1_bytes)
+        .map_err(|e| format!("创建标量1失败: {}", e))?;
+    
+    let two_g = generator.mul(&scalar_2);  // 2G 通过标量乘法
+    let one_g = generator.mul(&scalar_1);  // 1G 通过标量乘法
+    let result = two_g.sub(&one_g);        // 2G - 1G
+    
+    println!("点减法 2G - G = G: {}", result.equals(&one_g));
+    
+    // 验证群的单位元性质: G + O = G
+    let g_plus_o = generator.add(&identity);
+    println!("验证 G + O = G: {}", g_plus_o.equals(&generator));
     
     // 点的序列化和反序列化
     let compressed = generator.to_bytes();
-    let decompressed = FsG1::from_bytes(&compressed)?;
+    let decompressed = FsG1::from_bytes(&compressed)
+        .map_err(|e| format!("反序列化失败: {}", e))?;
     println!("点的序列化/反序列化: {}", 
              generator.equals(&decompressed));
     
@@ -115,13 +149,18 @@ fn demonstrate_point_operations() -> Result<(), String> {
 /// 演示标量乘法的重要性质
 fn demonstrate_scalar_multiplication() -> Result<(), String> {
     println!("\n⚡ 1.3 标量乘法演示");
-    println!("-".repeat(30));
+    println!("{}", "-".repeat(30));
     
     let generator = FsG1::generator();
     
-    // 创建两个标量
-    let scalar_a = FsFr::from_bytes(&[3u8; 32])?;
-    let scalar_b = FsFr::from_bytes(&[5u8; 32])?;
+    // 创建两个小的标量，确保有效性
+    let mut scalar_a_bytes = [0u8; 32];
+    scalar_a_bytes[31] = 3;
+    let scalar_a = FsFr::from_bytes(&scalar_a_bytes)?;
+    
+    let mut scalar_b_bytes = [0u8; 32];
+    scalar_b_bytes[31] = 5;
+    let scalar_b = FsFr::from_bytes(&scalar_b_bytes)?;
     
     // 标量乘法: aG, bG
     let point_a = generator.mul(&scalar_a);
@@ -146,7 +185,10 @@ fn demonstrate_scalar_multiplication() -> Result<(), String> {
              left_side.equals(&right_side));
     
     // 演示大数标量乘法的效率
-    let large_scalar = FsFr::from_bytes(&[255u8; 32])?;
+    let mut large_scalar_bytes = [0u8; 32];
+    large_scalar_bytes[31] = 255;  // 只设置最低字节，避免超出域大小
+    let large_scalar = FsFr::from_bytes(&large_scalar_bytes)?;
+    
     let start = std::time::Instant::now();
     let _large_result = generator.mul(&large_scalar);
     let duration = start.elapsed();
@@ -162,7 +204,8 @@ fn demonstrate_scalar_multiplication() -> Result<(), String> {
 让我们通过实际代码理解椭圆曲线的基础操作：
 
 ```rust
-use rust_kzg_blst::{types::fr::FsFr, types::g1::FsG1, Fr, G1};
+use rust_kzg_blst::{types::fr::FsFr, types::g1::FsG1};
+use kzg::{Fr, G1, G1Mul};
 
 fn elliptic_curve_basics() -> Result<(), String> {
     // 1. 创建标量元素 (有限域 Fr 中的元素)
@@ -172,13 +215,15 @@ fn elliptic_curve_basics() -> Result<(), String> {
     println!("零元素验证: {}", zero.is_zero());      // true
     println!("单位元素验证: {}", one.is_one());      // true
     
-    // 2. 从字节数组创建标量
-    let scalar_bytes = [1u8; 32];  // 32字节 = 256位
-    let scalar = FsFr::from_bytes(&scalar_bytes)?;
+    // 2. 从字节数组创建标量 - 使用安全的小值
+    let mut scalar_bytes = [0u8; 32];
+    scalar_bytes[31] = 5;  // 设置为小值，确保有效性
+    let scalar = FsFr::from_bytes(&scalar_bytes)
+        .map_err(|e| format!("创建标量失败: {}", e))?;
     
     // 3. 标量运算演示
-    let sum = one.add(&scalar);         // 有限域加法
-    let product = scalar.mul(&scalar);  // 有限域乘法
+    let _sum = one.add(&scalar);         // 有限域加法
+    let _product = scalar.mul(&scalar);  // 有限域乘法
     let inverse = scalar.inverse();     // 乘法逆元
     
     // 验证逆元性质: a * a^(-1) = 1
@@ -219,9 +264,20 @@ fn point_operations_demo() -> Result<(), String> {
     // 点加法：椭圆曲线群的加法运算
     let doubled_g = generator.add(&generator);  // G + G = 2G
     
-    // 点减法：加法逆元运算
-    let should_be_g = doubled_g.sub(&generator); // 2G - G = G
-    assert!(should_be_g.equals(&generator));
+    // 点减法：使用标量乘法验证
+    let mut scalar_2_bytes = [0u8; 32];
+    scalar_2_bytes[31] = 2;
+    let scalar_2 = FsFr::from_bytes(&scalar_2_bytes)?;
+    
+    let mut scalar_1_bytes = [0u8; 32];
+    scalar_1_bytes[31] = 1;
+    let scalar_1 = FsFr::from_bytes(&scalar_1_bytes)?;
+    
+    let two_g = generator.mul(&scalar_2);  // 2G
+    let one_g = generator.mul(&scalar_1);  // 1G
+    let result = two_g.sub(&one_g);        // 2G - 1G
+    
+    assert!(result.equals(&one_g));
     
     // 验证群的单位元性质: G + O = G
     let g_plus_o = generator.add(&identity);
@@ -242,9 +298,14 @@ $$kG = \underbrace{G + G + \cdots + G}_{k \text{ 次}}$$
 fn scalar_multiplication_demo() -> Result<(), String> {
     let generator = FsG1::generator();
     
-    // 创建标量
-    let scalar_3 = FsFr::from_bytes(&[3u8; 32])?;
-    let scalar_5 = FsFr::from_bytes(&[5u8; 32])?;
+    // 创建小标量，确保有效性
+    let mut scalar_3_bytes = [0u8; 32];
+    scalar_3_bytes[31] = 3;
+    let scalar_3 = FsFr::from_bytes(&scalar_3_bytes)?;
+    
+    let mut scalar_5_bytes = [0u8; 32];
+    scalar_5_bytes[31] = 5;
+    let scalar_5 = FsFr::from_bytes(&scalar_5_bytes)?;
     
     // 标量乘法
     let point_3g = generator.mul(&scalar_3);    // 3G
@@ -518,55 +579,81 @@ fn verification_demo() -> Result<(), String> {
 ```rust
 /// 多项式操作实验
 fn polynomial_experiment() -> Result<(), String> {
-    println!("\n🧪 多项式操作实验");
-    println!("=" .repeat(30));
+    println!("\n🧪 1.4 多项式操作实验");
+    println!("{}", "-".repeat(30));
     
     // 定义多项式 f(x) = 2 + 3x + x²
-    let f = vec![Fr::from(2), Fr::from(3), Fr::from(1)];
+    // 使用有效的小标量
+    let mut coeff_2_bytes = [0u8; 32];
+    coeff_2_bytes[31] = 2;
+    let coeff_2 = FsFr::from_bytes(&coeff_2_bytes)?;
     
-    // 手动验证 f(5) = 2 + 3*5 + 1*25 = 42
-    let x = Fr::from(5);
-    let expected = Fr::from(42);
-    let actual = evaluate_polynomial(&f, x);
+    let mut coeff_3_bytes = [0u8; 32];
+    coeff_3_bytes[31] = 3;
+    let coeff_3 = FsFr::from_bytes(&coeff_3_bytes)?;
     
-    assert!(actual.equals(&expected));
-    println!("f(5) = {} ✓", actual.to_string());
+    let mut coeff_1_bytes = [0u8; 32];
+    coeff_1_bytes[31] = 1;
+    let coeff_1 = FsFr::from_bytes(&coeff_1_bytes)?;
     
-    // 多项式乘法：g(x) = x - 5
-    let g = vec![Fr::from(-5), Fr::from(1)]; // -5 + x
+    let f = vec![coeff_2, coeff_3, coeff_1];  // [2, 3, 1]
     
-    // h(x) = f(x) * g(x)
-    let h = multiply_polynomials(&f, &g);
+    // 创建求值点 x = 5
+    let mut x_bytes = [0u8; 32];
+    x_bytes[31] = 5;
+    let x = FsFr::from_bytes(&x_bytes)?;
     
-    // 验证 h(5) = f(5) * g(5) = 42 * 0 = 0
-    let h_at_5 = evaluate_polynomial(&h, Fr::from(5));
-    assert!(h_at_5.is_zero());
-    println!("h(5) = f(5) * g(5) = 0 ✓");
+    // 计算 f(5) = 2 + 3*5 + 1*25 = 42
+    let result = evaluate_polynomial(&f, x);
+    
+    // 验证结果
+    let mut expected_bytes = [0u8; 32];
+    expected_bytes[31] = 42;
+    let expected = FsFr::from_bytes(&expected_bytes)?;
+    
+    println!("f(5) 计算结果验证: {}", result.equals(&expected));
+    
+    // 演示多项式加法的同态性
+    let g = vec![coeff_1, coeff_2, coeff_3]; // g(x) = 1 + 2x + 3x²
+    
+    // f(x) + g(x) = (2+1) + (3+2)x + (1+3)x² = 3 + 5x + 4x²
+    let sum_poly = add_polynomials(&f, &g);
+    
+    // 验证在 x=5 处的值
+    let f_at_5 = evaluate_polynomial(&f, x);
+    let g_at_5 = evaluate_polynomial(&g, x);
+    let sum_at_5 = evaluate_polynomial(&sum_poly, x);
+    let expected_sum = f_at_5.add(&g_at_5);
+    
+    println!("多项式加法同态性验证: {}", sum_at_5.equals(&expected_sum));
     
     println!("多项式操作实验完成！");
     Ok(())
 }
 
 // 辅助函数：多项式求值
-fn evaluate_polynomial(coeffs: &[Fr], x: Fr) -> Fr {
-    coeffs.iter()
-        .enumerate()
-        .map(|(i, coeff)| {
-            let power = x.pow(&Fr::from(i as u64));
-            coeff.mul(&power)
-        })
-        .fold(Fr::zero(), |acc, term| acc.add(&term))
+fn evaluate_polynomial(coeffs: &[FsFr], x: FsFr) -> FsFr {
+    let mut result = FsFr::zero();
+    let mut x_power = FsFr::one();
+    
+    for coeff in coeffs.iter() {
+        let term = coeff.mul(&x_power);
+        result = result.add(&term);
+        x_power = x_power.mul(&x);
+    }
+    
+    result
 }
 
-// 辅助函数：多项式乘法
-fn multiply_polynomials(f: &[Fr], g: &[Fr]) -> Vec<Fr> {
-    let mut result = vec![Fr::zero(); f.len() + g.len() - 1];
+// 辅助函数：多项式加法
+fn add_polynomials(f: &[FsFr], g: &[FsFr]) -> Vec<FsFr> {
+    let max_len = f.len().max(g.len());
+    let mut result = Vec::with_capacity(max_len);
     
-    for (i, f_coeff) in f.iter().enumerate() {
-        for (j, g_coeff) in g.iter().enumerate() {
-            let product = f_coeff.mul(g_coeff);
-            result[i + j] = result[i + j].add(&product);
-        }
+    for i in 0..max_len {
+        let f_coeff = if i < f.len() { f[i].clone() } else { FsFr::zero() };
+        let g_coeff = if i < g.len() { g[i].clone() } else { FsFr::zero() };
+        result.push(f_coeff.add(&g_coeff));
     }
     
     result

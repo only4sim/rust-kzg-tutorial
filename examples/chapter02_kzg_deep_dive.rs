@@ -203,7 +203,7 @@ fn demonstrate_kzg_mathematics() -> Result<(), Box<dyn std::error::Error>> {
     println!("      - 其中 τ 是受信任设置中的秘密值");
     
     let start = Instant::now();
-    let commitment = blob_to_kzg_commitment_rust(&blob, &kzg_settings)?;
+    let _commitment = blob_to_kzg_commitment_rust(&blob, &kzg_settings)?;
     let commit_time = start.elapsed();
     
     println!("   ✅ 成功生成多项式承诺");

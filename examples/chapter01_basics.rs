@@ -74,12 +74,26 @@ fn demonstrate_point_operations() -> Result<(), String> {
     println!("无穷远点 O: 获取成功");
     
     // 点加法: G + G = 2G
-    let doubled_g = generator.add(&generator);
+    let _doubled_g = generator.add(&generator);
     println!("点加法 G + G: 完成");
     
-    // 点减法: 2G - G = G
-    let should_be_g = doubled_g.sub(&generator);
-    println!("点减法 2G - G = G: {}", should_be_g.equals(&generator));
+    // 点减法验证: 验证椭圆曲线群的性质
+    // 使用更加明确的方法验证 2G - G = G
+    let mut scalar_2_bytes = [0u8; 32];
+    scalar_2_bytes[31] = 2;
+    let scalar_2 = FsFr::from_bytes(&scalar_2_bytes)
+        .map_err(|e| format!("创建标量2失败: {}", e))?;
+    
+    let mut scalar_1_bytes = [0u8; 32];
+    scalar_1_bytes[31] = 1;
+    let scalar_1 = FsFr::from_bytes(&scalar_1_bytes)
+        .map_err(|e| format!("创建标量1失败: {}", e))?;
+    
+    let two_g = generator.mul(&scalar_2);  // 2G 通过标量乘法
+    let one_g = generator.mul(&scalar_1);  // 1G 通过标量乘法
+    let result = two_g.sub(&one_g);        // 2G - 1G
+    
+    println!("点减法 2G - G = G: {}", result.equals(&one_g));
     
     // 验证群的单位元性质: G + O = G
     let g_plus_o = generator.add(&identity);
