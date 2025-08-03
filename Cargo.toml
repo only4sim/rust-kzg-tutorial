@@ -11,9 +11,9 @@ keywords = ["cryptography", "kzg", "polynomial", "commitment", "tutorial"]
 categories = ["cryptography", "tutorial", "development-tools"]
 
 [dependencies]
-# 使用官方发布的 rust-kzg 库
-rust-kzg-blst = { git = "https://github.com/grandinetech/rust-kzg.git", package = "rust-kzg-blst" }
-kzg = { git = "https://github.com/grandinetech/rust-kzg.git" }
+# 使用本地的 rust-kzg 库进行开发
+kzg = { path = "../rust-kzg/kzg" }
+rust-kzg-blst = { path = "../rust-kzg/blst" }
 
 # 用于示例的其他依赖
 log = "0.4"
@@ -38,6 +38,14 @@ path = "examples/chapter03_eip4844_application.rs"
 [[example]]
 name = "chapter04_architecture_design"
 path = "examples/chapter04_architecture_design.rs"
+
+[[example]]
+name = "chapter05_core_trait_system"
+path = "examples/chapter05_core_trait_system.rs"
+
+[[example]]
+name = "chapter06_module_organization"
+path = "examples/chapter06_module_organization.rs"
 
 [[example]]
 name = "hello_kzg"
