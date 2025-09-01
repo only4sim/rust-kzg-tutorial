@@ -1,0 +1,60 @@
+[package]
+name = "rust-kzg-tutorial"
+version = "0.1.0"
+edition = "2021"
+authors = ["Rust KZG Tutorial Contributors"]
+description = "完整的 Rust KZG 密码学库教程与示例"
+readme = "README.md"
+repository = "https://github.com/your-username/rust-kzg-tutorial"
+license = "MIT"
+keywords = ["cryptography", "kzg", "polynomial", "commitment", "tutorial"]
+categories = ["cryptography", "tutorial", "development-tools"]
+
+[dependencies]
+# 使用本地的 rust-kzg 库进行开发
+kzg = { path = "../rust-kzg/kzg" }
+rust-kzg-blst = { path = "../rust-kzg/blst" }
+
+# 用于示例的其他依赖
+log = "0.4"
+env_logger = "0.10"
+rand = "0.8"
+hex = "0.4"
+num_cpus = "1.0"
+rayon = { version = "1.7", optional = true }
+
+[[example]]
+name = "chapter01_basics"
+path = "examples/chapter01_basics.rs"
+
+[[example]]
+name = "chapter02_kzg_deep_dive"
+path = "examples/chapter02_kzg_deep_dive.rs"
+
+[[example]]
+name = "chapter03_eip4844_application"
+path = "examples/chapter03_eip4844_application.rs"
+
+[[example]]
+name = "chapter04_architecture_design"
+path = "examples/chapter04_architecture_design.rs"
+
+[[example]]
+name = "chapter05_core_trait_system"
+path = "examples/chapter05_core_trait_system.rs"
+
+[[example]]
+name = "chapter06_module_organization"
+path = "examples/chapter06_module_organization.rs"
+
+[[example]]
+name = "hello_kzg"
+path = "examples/hello_kzg.rs"
+
+[features]
+default = []
+parallel = ["rayon"]
+
+[profile.release]
+opt-level = 3
+lto = "thin"
