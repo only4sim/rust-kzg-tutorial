@@ -4,7 +4,7 @@
 
 [![Rust](https://img.shields.io/badge/rust-1.89%2B-orange.svg)](https://www.rust-lang.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Progress](https://img.shields.io/badge/Progress-36.8%25-green.svg)](#progress)
+[![Progress](https://img.shields.io/badge/Progress-40.0%25-green.svg)](#progress)
 
 ---
 
@@ -51,7 +51,7 @@ cargo run --example hello_kzg
 
 ## 📊 当前进度 {#progress}
 
-### ✅ 已完成章节 (7/19 - 36.8%)
+### ✅ 已完成章节 (8/20 - 40.0%)
 
 | 章节 | 标题 | 状态 | 核心内容 |
 |------|------|------|----------|
@@ -62,10 +62,11 @@ cargo run --example hello_kzg
 | 第5章 | 核心 Trait 系统设计 | ✅ | Fr/G1/G2 Trait、KZG 设置 |
 | 第6章 | 模块划分与依赖管理 | ✅ | 工作区结构、后端对比、版本管理 |
 | 第7章 | 数据可用性采样 | ✅ | EIP-7594、PeerDAS、Cell 恢复 |
+| 第8章 | BLST 后端深度剖析 | ✅ | 汇编优化、错误处理、性能分析 |
 | 第10章 | 环境搭建与基础使用 | ✅ | 开发环境、Hello KZG、调试技巧 |
 
-###  待完成章节 (11个)
-第8章 (BLST 后端) • 第9章 (GPU 加速) • 第11章 (高级 API) • 第12章 (C 语言绑定) • 第13章 (自定义后端) • 第14章 (性能优化) • 第15章 (安全性分析) • 第16章 (代码质量) • 第17章 (新特性开发) • 第18章 (生态系统扩展) • 第19章 (未来发展)
+###  待完成章节 (12个)
+第9章 (GPU 加速) • 第11章 (高级 API) • 第12章 (C 语言绑定) • 第13章 (自定义后端) • 第14章 (性能优化) • 第15章 (安全性分析) • 第16章 (代码质量) • 第17章 (新特性开发) • 第18章 (生态系统扩展) • 第19章 (未来发展) • 第20章 (总结与展望)
 
 ---
 

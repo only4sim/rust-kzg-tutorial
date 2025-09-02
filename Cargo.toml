@@ -53,6 +53,10 @@ name = "chapter07_eip7594_das"
 path = "examples/chapter07_eip7594_das.rs"
 
 [[example]]
+name = "chapter08_blst_backend"
+path = "examples/chapter08_blst_backend.rs"
+
+[[example]]
 name = "hello_kzg"
 path = "examples/hello_kzg.rs"
 

@@ -1,3 +1,28 @@
+# Rust 编译产物
+/target/
 /Cargo.lock
-/target
+
+# IDE 配置
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 操作系统文件
+.DS_Store
+Thumbs.db
+
+# 临时文件
+*.tmp
+*.bak
+*~
+
+# 日志文件
+*.log
+
+# 中间开发文件
 /tmpdoc
+
+# 保留重要的计划文档
+!/tmpdoc/project_development_plan.md
+!/tmpdoc/project_status_report_*.md
