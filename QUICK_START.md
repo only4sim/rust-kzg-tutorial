@@ -59,9 +59,12 @@ cargo check
 ```bash
 # 运行 Hello KZG 示例
 cargo run --example hello_kzg
+
+# 运行 EIP-7594 PeerDAS 演示
+cargo run --example chapter07_eip7594_das
 ```
 
-🎉 如果看到 "Hello KZG World!" 和性能统计，说明环境设置成功！
+🎉 如果看到 "Hello KZG World!" 和 EIP-7594 演示结果，说明环境设置成功！
 
 ---
 
@@ -75,6 +78,7 @@ cargo run --example hello_kzg
 ### 🚀 进阶章节
 - **第4章**: 架构设计 - 理解多后端设计思想
 - **第5章**: Trait 系统 - 掌握 Rust 抽象设计
+- **第7章**: EIP-7594 DAS - 体验前沿数据可用性技术
 - **第9章**: GPU 加速 - 体验高性能优化
 
 ### 🔧 实用章节

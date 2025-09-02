@@ -22,6 +22,7 @@ rand = "0.8"
 hex = "0.4"
 num_cpus = "1.0"
 rayon = { version = "1.7", optional = true }
+sha2 = "0.10"
 
 [[example]]
 name = "chapter01_basics"
@@ -46,6 +47,10 @@ path = "examples/chapter05_core_trait_system.rs"
 [[example]]
 name = "chapter06_module_organization"
 path = "examples/chapter06_module_organization.rs"
+
+[[example]]
+name = "chapter07_eip7594_das"
+path = "examples/chapter07_eip7594_das.rs"
 
 [[example]]
 name = "hello_kzg"
