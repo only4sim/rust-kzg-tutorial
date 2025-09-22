@@ -5,6 +5,7 @@
 [![Rust](https://img.shields.io/badge/rust-1.89%2B-orange.svg)](https://www.rust-lang.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Progress](https://img.shields.io/badge/Progress-40.0%25-green.svg)](#progress)
+[![Last Update](https://img.shields.io/badge/Last%20Update-2025%2F09%2F22-blue.svg)](#progress)
 
 ---
 
@@ -65,8 +66,13 @@ cargo run --example hello_kzg
 | 第8章 | BLST 后端深度剖析 | ✅ | 汇编优化、错误处理、性能分析 |
 | 第10章 | 环境搭建与基础使用 | ✅ | 开发环境、Hello KZG、调试技巧 |
 
-###  待完成章节 (12个)
-第9章 (GPU 加速) • 第11章 (高级 API) • 第12章 (C 语言绑定) • 第13章 (自定义后端) • 第14章 (性能优化) • 第15章 (安全性分析) • 第16章 (代码质量) • 第17章 (新特性开发) • 第18章 (生态系统扩展) • 第19章 (未来发展) • 第20章 (总结与展望)
+### 📍 待完成章节 (12个)
+🎯 **近期重点**: 
+- **第9章** (GPU 加速) - 2025年10月前 🔥
+- **第11章** (高级 API) - 2025年11月上旬 ⚡
+- **第12章** (C 语言绑定) - 2025年11月下旬 🌐
+
+📅 **其余章节**: 第13-20章将在2025年Q4-2026年逐步完成
 
 ---
 
@@ -181,11 +187,11 @@ let kzg_settings = load_trusted_setup_with_sppark()?;
 - **🌍 翻译工作**: 将教程翻译为其他语言
 - **🛠️ 工具开发**: 可视化工具、性能分析工具
 
-### 📋 开发计划
-- **✅ 9月**: 完成 EIP-7594 DAS 章节 
-- **10月**: BLST 后端深度解析  
-- **11月**: GPU 加速实现教程
-- **12月**: 高级 API 和跨语言集成
+### 📋 开发计划 (更新版)
+- **✅ 9月**: 完成 EIP-7594 DAS + BLST 后端深度解析
+- **🎯 10月**: GPU 加速实现与优化教程
+- **📈 11月**: 高级 API 使用 + C 语言绑定集成
+- **🚀 12月**: 自定义后端开发 + 在线文档发布
 
 ---
 
