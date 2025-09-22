@@ -4,7 +4,7 @@
 
 [![Rust](https://img.shields.io/badge/rust-1.89%2B-orange.svg)](https://www.rust-lang.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Progress](https://img.shields.io/badge/Progress-40.0%25-green.svg)](#progress)
+[![Progress](https://img.shields.io/badge/Progress-45.0%25-green.svg)](#progress)
 [![Last Update](https://img.shields.io/badge/Last%20Update-2025%2F09%2F22-blue.svg)](#progress)
 
 ---
@@ -52,7 +52,7 @@ cargo run --example hello_kzg
 
 ## 📊 当前进度 {#progress}
 
-### ✅ 已完成章节 (8/20 - 40.0%)
+### ✅ 已完成章节 (9/20 - 45.0%)
 
 | 章节 | 标题 | 状态 | 核心内容 |
 |------|------|------|----------|
@@ -64,15 +64,16 @@ cargo run --example hello_kzg
 | 第6章 | 模块划分与依赖管理 | ✅ | 工作区结构、后端对比、版本管理 |
 | 第7章 | 数据可用性采样 | ✅ | EIP-7594、PeerDAS、Cell 恢复 |
 | 第8章 | BLST 后端深度剖析 | ✅ | 汇编优化、错误处理、性能分析 |
+| 第9章 | GPU 加速与高性能优化 | ✅ | SPPARK 集成、性能基准、自适应后端 |
 | 第10章 | 环境搭建与基础使用 | ✅ | 开发环境、Hello KZG、调试技巧 |
 
-### 📍 待完成章节 (12个)
+### 📍 待完成章节 (11个)
 🎯 **近期重点**: 
-- **第9章** (GPU 加速) - 2025年10月前 🔥
-- **第11章** (高级 API) - 2025年11月上旬 ⚡
-- **第12章** (C 语言绑定) - 2025年11月下旬 🌐
+- **第11章** (高级 API) - 2025年10月前 🔥
+- **第12章** (跨语言集成) - 2025年10月中旬 ⚡
+- **第13章** (性能分析与调优) - 2025年11月上旬 🌐
 
-📅 **其余章节**: 第13-20章将在2025年Q4-2026年逐步完成
+📅 **其余章节**: 第14-20章将在2025年Q4-2026年逐步完成
 
 ---
 
