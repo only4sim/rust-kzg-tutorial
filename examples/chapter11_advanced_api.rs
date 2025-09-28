@@ -1272,3 +1272,125 @@ mod rand {
         T::from(hasher.finish())
     }
 }
+
+// ============================================================================
+// 单元测试
+// ============================================================================
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    
+    #[test]
+    fn test_fr_creation() {
+        let zero = Fr::zero();
+        let one = Fr::one();
+        
+        assert_eq!(zero.0, [0u8; 32]);
+        
+        let mut expected_one = [0u8; 32];
+        expected_one[31] = 1;
+        assert_eq!(one.0, expected_one);
+    }
+    
+    #[test]
+    fn test_fr_from_bytes() {
+        let bytes = [1u8; 32];
+        let fr = Fr::from_bytes(&bytes).unwrap();
+        assert_eq!(fr.0, bytes);
+        
+        // 测试错误情况
+        let wrong_bytes = [1u8; 16];
+        let result = Fr::from_bytes(&wrong_bytes);
+        assert!(result.is_err());
+    }
+    
+    #[test]
+    fn test_g1_creation() {
+        let zero = G1::zero();
+        let gen = G1::generator();
+        
+        assert_eq!(zero.0, [0u8; 48]);
+        
+        let mut expected_gen = [0u8; 48];
+        expected_gen[47] = 1;
+        assert_eq!(gen.0, expected_gen);
+    }
+    
+    #[test]
+    fn test_batch_processor_creation() {
+        let settings = Arc::new(MockKzgSettings::new());
+        let processor = BatchProcessor::new(settings);
+        
+        assert_eq!(processor.chunk_size, 64);
+        assert_eq!(processor.parallel_workers, num_cpus::get());
+    }
+    
+    #[test]
+    fn test_batch_processor_with_chunk_size() {
+        let settings = Arc::new(MockKzgSettings::new());
+        let processor = BatchProcessor::new(settings).with_chunk_size(32);
+        
+        assert_eq!(processor.chunk_size, 32);
+    }
+    
+    #[test]
+    fn test_stream_processor_creation() {
+        let settings = Arc::new(MockKzgSettings::new());
+        let processor = StreamProcessor::new(settings);
+        
+        assert_eq!(processor.buffer_size, 4096 * 32);
+    }
+    
+    #[test]
+    fn test_adaptive_backend_creation() {
+        let backend = AdaptiveBackend::new();
+        
+        assert_eq!(backend.current_backend, "blst");
+        assert_eq!(backend.profiles.len(), 3); // blst, arkworks, constantine
+    }
+    
+    #[test]
+    fn test_performance_monitor_creation() {
+        let monitor = PerformanceMonitor::new();
+        let report = monitor.get_report();
+        
+        assert_eq!(report.operations_count, 0);
+        assert_eq!(report.error_count, 0);
+    }
+    
+    #[test]
+    fn test_arena_creation() {
+        let arena = Arena::new();
+        
+        assert_eq!(arena.current_chunk, 0);
+        assert_eq!(arena.current_pos, 0);
+        assert_eq!(arena.chunks.len(), 1);
+        assert_eq!(arena.total_memory(), 1024 * 1024);
+    }
+    
+    #[test]
+    fn test_arena_with_capacity() {
+        let arena = Arena::with_capacity(2048);
+        
+        assert_eq!(arena.total_memory(), 2048);
+    }
+    
+    #[test]
+    fn test_memory_pool_creation() {
+        let pool: MemoryPool<Fr> = MemoryPool::new(100, 10);
+        
+        assert_eq!(pool.size(), 0);
+        assert_eq!(pool.capacity, 100);
+        assert_eq!(pool.max_size, 10);
+    }
+    
+    #[test]
+    fn test_circuit_breaker_creation() {
+        let cb = CircuitBreaker::new(5, Duration::from_secs(60));
+        
+        assert_eq!(cb.failure_threshold, 5);
+        assert_eq!(cb.timeout, Duration::from_secs(60));
+        assert_eq!(cb.state, CircuitBreakerState::Closed);
+    }
+}

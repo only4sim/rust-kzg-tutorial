@@ -49,8 +49,13 @@ fn demonstrate_blst_performance() -> Result<(), Box<dyn std::error::Error>> {
         println!("\n🔍 测试规模: {} 个元素", size);
         
         // 生成测试数据
+        let mut rng = rand::thread_rng();
         let scalars: Vec<FsFr> = (0..size)
-            .map(|i| FsFr::from_u64_arr(&[i as u64 + 1, 0, 0, 0]))
+            .map(|i| {
+                // 使用小的随机值确保在域内
+                let value = rng.gen_range(1..=1000000) + i as u64;
+                FsFr::from_u64_arr(&[value, 0, 0, 0])
+            })
             .collect();
         
         let points: Vec<FsG1> = (0..size)

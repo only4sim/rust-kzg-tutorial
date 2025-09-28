@@ -67,3 +67,7 @@ parallel = ["rayon"]
 [profile.release]
 opt-level = 3
 lto = "thin"
+
+[[example]]
+name = "chapter14_security_analysis_hardening"
+path = "examples/chapter14_security_analysis_hardening.rs"
