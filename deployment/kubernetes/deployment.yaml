@@ -1,0 +1,252 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kzg-service
+  namespace: kzg-production
+  labels:
+    app: kzg-service
+    version: v1.0.0
+    component: compute
+    tier: backend
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: kzg-service
+  template:
+    metadata:
+      labels:
+        app: kzg-service
+        version: v1.0.0
+        component: compute
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9090"
+        prometheus.io/path: "/metrics"
+        # 配置更新时强制重启
+        kubectl.kubernetes.io/restartedAt: "2024-01-01T00:00:00Z"
+    spec:
+      # 安全上下文
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        runAsGroup: 1001
+        fsGroup: 1001
+        seccompProfile:
+          type: RuntimeDefault
+      
+      # 服务账户
+      serviceAccountName: kzg-service
+      
+      # 容器配置
+      containers:
+      - name: kzg-service
+        image: kzg-service:v1.0.0
+        imagePullPolicy: IfNotPresent
+        
+        # 端口配置
+        ports:
+        - name: http
+          containerPort: 8080
+          protocol: TCP
+        - name: metrics
+          containerPort: 9090
+          protocol: TCP
+          
+        # 环境变量
+        env:
+        - name: RUST_LOG
+          value: "info"
+        - name: KZG_ENVIRONMENT
+          value: "production"
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+              
+        # 资源限制
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "1000m"
+            ephemeral-storage: "1Gi"
+          limits:
+            memory: "8Gi"
+            cpu: "4000m"
+            ephemeral-storage: "5Gi"
+            
+        # 健康检查
+        livenessProbe:
+          httpGet:
+            path: /health/live
+            port: http
+            scheme: HTTP
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+          successThreshold: 1
+          
+        readinessProbe:
+          httpGet:
+            path: /health/ready
+            port: http
+            scheme: HTTP
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+          successThreshold: 1
+          
+        # 启动探针 (防止启动慢的容器被误杀)
+        startupProbe:
+          httpGet:
+            path: /health/startup
+            port: http
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 12  # 60秒启动时间
+          successThreshold: 1
+          
+        # 存储挂载
+        volumeMounts:
+        - name: config
+          mountPath: /app/config
+          readOnly: true
+        - name: trusted-setup
+          mountPath: /app/trusted-setup
+          readOnly: true
+        - name: tmp-data
+          mountPath: /app/data
+        - name: tmp-logs
+          mountPath: /app/logs
+          
+        # 容器安全配置
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          runAsUser: 1001
+          runAsGroup: 1001
+          capabilities:
+            drop:
+            - ALL
+            
+        # 生命周期钩子
+        lifecycle:
+          preStop:
+            exec:
+              command:
+              - /bin/sh
+              - -c
+              - "sleep 15" # 优雅关闭等待时间
+              
+      # 存储卷定义
+      volumes:
+      - name: config
+        configMap:
+          name: kzg-service-config
+          defaultMode: 0644
+      - name: trusted-setup
+        secret:
+          secretName: kzg-trusted-setup
+          defaultMode: 0644
+      - name: tmp-data
+        emptyDir:
+          sizeLimit: "1Gi"
+      - name: tmp-logs
+        emptyDir:
+          sizeLimit: "500Mi"
+        
+      # 调度配置
+      # 节点选择器
+      nodeSelector:
+        kubernetes.io/arch: amd64
+        node-type: compute-optimized
+        
+      # 容忍度配置
+      tolerations:
+      - key: "compute-intensive"
+        operator: "Equal"
+        value: "true"
+        effect: "NoSchedule"
+      - key: "node.kubernetes.io/memory-pressure"
+        operator: "Exists"
+        effect: "NoSchedule"
+        tolerationSeconds: 300
+        
+      # 亲和性配置
+      affinity:
+        # Pod 反亲和性 - 确保 Pod 分散在不同节点
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values: [kzg-service]
+              topologyKey: kubernetes.io/hostname
+          # 软性要求 - 尽量不与同一应用的 Pod 在同一可用区
+          - weight: 50
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values: [kzg-service]
+              topologyKey: topology.kubernetes.io/zone
+              
+        # 节点亲和性 - 偏好特定类型的节点
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            preference:
+              matchExpressions:
+              - key: node-performance
+                operator: In
+                values: ["high", "optimized"]
+          - weight: 50
+            preference:
+              matchExpressions:
+              - key: kubernetes.io/instance-type
+                operator: In
+                values: ["c5.2xlarge", "c5.4xlarge", "c5.8xlarge"]
+      
+      # DNS 配置
+      dnsPolicy: ClusterFirst
+      dnsConfig:
+        options:
+        - name: ndots
+          value: "2"
+        - name: edns0
+          
+      # 重启策略
+      restartPolicy: Always
+      
+      # 终止宽限期
+      terminationGracePeriodSeconds: 60
+      
+      # 镜像拉取密钥 (如果使用私有镜像仓库)
+      # imagePullSecrets:
+      # - name: docker-registry-secret

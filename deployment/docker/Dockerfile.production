@@ -1,0 +1,108 @@
+# ===== 构建阶段 =====
+FROM rust:1.79-bullseye as builder
+
+# 设置环境变量
+ENV CARGO_TERM_COLOR=always
+ENV RUSTFLAGS="-C target-cpu=native"
+
+# 安装构建依赖
+RUN apt-get update && apt-get install -y \
+    pkg-config \
+    libssl-dev \
+    build-essential \
+    cmake \
+    git \
+    clang \
+    && rm -rf /var/lib/apt/lists/*
+
+# 创建构建用户 (避免使用 root)
+RUN useradd -m -u 1001 builder
+USER builder
+
+# 设置工作目录
+WORKDIR /home/builder/app
+
+# 复制依赖配置文件 (利用 Docker 层缓存)
+COPY --chown=builder:builder Cargo.toml Cargo.lock ./
+
+# 创建虚拟 src 目录来预构建依赖
+RUN mkdir -p src examples && \
+    echo "fn main() {}" > src/main.rs && \
+    echo "fn main() {}" > examples/chapter16_production_deployment.rs && \
+    cargo build --release --example chapter16_production_deployment && \
+    rm -rf src examples
+
+# 复制源代码
+COPY --chown=builder:builder src/ ./src/
+COPY --chown=builder:builder examples/ ./examples/
+COPY --chown=builder:builder assets/ ./assets/
+
+# 构建生产版本
+RUN touch src/main.rs examples/chapter16_production_deployment.rs && \
+    cargo build --release --example chapter16_production_deployment
+
+# ===== 运行时阶段 =====
+FROM debian:bullseye-slim as runtime
+
+# 安装运行时依赖和安全更新
+RUN apt-get update && apt-get install -y \
+    ca-certificates \
+    curl \
+    libssl1.1 \
+    tini \
+    && apt-get upgrade -y \
+    && rm -rf /var/lib/apt/lists/* \
+    && update-ca-certificates
+
+# 创建应用用户和组
+RUN groupadd -r kzgapp --gid=1001 && \
+    useradd -r -g kzgapp --uid=1001 --shell=/bin/false --home-dir=/app kzgapp
+
+# 创建应用目录
+RUN mkdir -p /app/{config,data,logs,assets} && \
+    chown -R kzgapp:kzgapp /app
+
+# 复制二进制文件
+COPY --from=builder --chown=kzgapp:kzgapp \
+    /home/builder/app/target/release/examples/chapter16_production_deployment \
+    /usr/local/bin/kzg-service
+
+# 复制配置文件和资源
+COPY --from=builder --chown=kzgapp:kzgapp \
+    /home/builder/app/assets/trusted_setup.txt /app/assets/
+
+# 创建默认配置文件
+RUN echo '# Production KZG Service Configuration' > /app/config/production.toml && \
+    chown kzgapp:kzgapp /app/config/production.toml
+
+# 设置权限
+RUN chmod +x /usr/local/bin/kzg-service && \
+    chmod 755 /app && \
+    chmod -R 750 /app/config && \
+    chmod -R 755 /app/data /app/logs
+
+# 切换到非特权用户
+USER kzgapp:kzgapp
+
+# 设置工作目录
+WORKDIR /app
+
+# 健康检查
+HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
+    CMD curl -f http://localhost:8080/health || exit 1
+
+# 暴露端口
+EXPOSE 8080 9090
+
+# 设置环境变量
+ENV RUST_LOG=info \
+    RUST_BACKTRACE=1 \
+    KZG_CONFIG_PATH=/app/config/production.toml \
+    KZG_DATA_PATH=/app/data \
+    KZG_LOG_PATH=/app/logs
+
+# 使用 tini 作为 init 进程
+ENTRYPOINT ["/usr/bin/tini", "--"]
+
+# 启动命令
+CMD ["kzg-service"]

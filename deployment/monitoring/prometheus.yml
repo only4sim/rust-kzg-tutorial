@@ -1,0 +1,176 @@
+# Prometheus 配置文件 - KZG 服务监控
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    cluster: 'kzg-production'
+    environment: 'production'
+
+# 规则文件
+rule_files:
+  - "alerting-rules.yml"
+
+# 告警管理器配置
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          - alertmanager:9093
+
+# 采集配置
+scrape_configs:
+  # KZG 服务指标采集
+  - job_name: 'kzg-service'
+    scrape_interval: 5s
+    scrape_timeout: 5s
+    metrics_path: /metrics
+    scheme: http
+    
+    kubernetes_sd_configs:
+    - role: pod
+      namespaces:
+        names:
+        - kzg-production
+        
+    relabel_configs:
+    # 只采集有 prometheus.io/scrape 注解的 Pod
+    - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+      action: keep
+      regex: true
+      
+    # 使用注解中的端口
+    - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_port]
+      action: replace
+      target_label: __address__
+      regex: (.+)
+      replacement: ${1}:${__meta_kubernetes_pod_annotation_prometheus_io_port}
+      
+    # 使用注解中的路径
+    - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+      action: replace
+      target_label: __metrics_path__
+      regex: (.+)
+      
+    # 添加 Pod 标签
+    - source_labels: [__meta_kubernetes_pod_name]
+      target_label: pod
+      
+    - source_labels: [__meta_kubernetes_pod_node_name]
+      target_label: node
+      
+    - source_labels: [__meta_kubernetes_namespace]
+      target_label: namespace
+      
+    - source_labels: [__meta_kubernetes_pod_label_app]
+      target_label: app
+      
+    - source_labels: [__meta_kubernetes_pod_label_version]
+      target_label: version
+
+  # Kubernetes 系统指标
+  - job_name: 'kubernetes-pods'
+    scrape_interval: 15s
+    
+    kubernetes_sd_configs:
+    - role: pod
+    
+    relabel_configs:
+    - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+      action: keep
+      regex: true
+    - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+      action: replace
+      target_label: __metrics_path__
+      regex: (.+)
+    - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
+      action: replace
+      regex: ([^:]+)(?::\d+)?;(\d+)
+      replacement: $1:$2
+      target_label: __address__
+
+  # Node Exporter
+  - job_name: 'node-exporter'
+    scrape_interval: 15s
+    
+    kubernetes_sd_configs:
+    - role: node
+    
+    relabel_configs:
+    - source_labels: [__address__]
+      regex: '(.*):(10250)'
+      replacement: '${1}:9100'
+      target_label: __address__
+    - source_labels: [__meta_kubernetes_node_name]
+      target_label: node
+
+  # cAdvisor (容器指标)
+  - job_name: 'cadvisor'
+    scrape_interval: 15s
+    metrics_path: /metrics/cadvisor
+    scheme: https
+    tls_config:
+      ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+      insecure_skip_verify: true
+    bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+    
+    kubernetes_sd_configs:
+    - role: node
+    
+    relabel_configs:
+    - source_labels: [__address__]
+      regex: '(.*):(10250)'
+      replacement: '${1}:10250'
+      target_label: __address__
+    - source_labels: [__meta_kubernetes_node_name]
+      target_label: node
+
+  # Kube State Metrics
+  - job_name: 'kube-state-metrics'
+    scrape_interval: 15s
+    
+    kubernetes_sd_configs:
+    - role: service
+      namespaces:
+        names:
+        - kube-system
+        
+    relabel_configs:
+    - source_labels: [__meta_kubernetes_service_name]
+      action: keep
+      regex: kube-state-metrics
+
+  # API Server
+  - job_name: 'kubernetes-apiservers'
+    scrape_interval: 15s
+    scheme: https
+    tls_config:
+      ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+    bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+    
+    kubernetes_sd_configs:
+    - role: endpoints
+      namespaces:
+        names:
+        - default
+        
+    relabel_configs:
+    - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
+      action: keep
+      regex: default;kubernetes;https
+
+# 存储配置
+storage:
+  tsdb:
+    path: /prometheus/data
+    retention.time: 30d
+    retention.size: 100GB
+    
+# 远程写入 (可选 - 用于长期存储)
+# remote_write:
+#   - url: "https://prometheus-remote-storage.example.com/api/v1/write"
+#     queue_config:
+#       max_samples_per_send: 1000
+#       batch_send_deadline: 5s
+#       min_shards: 1
+#       max_shards: 200
