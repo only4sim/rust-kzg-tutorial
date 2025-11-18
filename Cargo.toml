@@ -86,3 +86,19 @@ lto = "thin"
 [[example]]
 name = "chapter16_production_deployment"
 path = "examples/chapter16_production_deployment.rs"
+
+[[example]]
+name = "chapter17_troubleshooting_maintenance"
+path = "examples/chapter17_troubleshooting_maintenance.rs"
+
+[[example]]
+name = "chapter18_new_feature_development"
+path = "examples/chapter18_new_feature_development.rs"
+
+[[example]]
+name = "chapter19_ecosystem_expansion"
+path = "examples/chapter19_ecosystem_expansion.rs"
+
+[[example]]
+name = "chapter20_project_practical_cases"
+path = "examples/chapter20_project_practical_cases.rs"
