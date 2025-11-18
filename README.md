@@ -160,7 +160,7 @@ cargo run --example hello_kzg  # Complete: 自动获取依赖！
 ### 第五部分: 扩展开发篇
 学会自定义后端、性能优化和安全加固
 
-### � 第六部分: 项目改进篇
+### 第六部分: 项目改进篇
 代码质量提升、新特性开发和生态建设
 
 > 完整大纲请查看 [TUTORIAL_OUTLINE.md](docs/TUTORIAL_OUTLINE.md)
@@ -217,7 +217,7 @@ let kzg_settings = load_trusted_setup_with_sppark()?;
 - **受信任设置**: 风险评估和最佳实践
 - **侧信道防护**: 常量时间实现分析
 
-### � 实现安全  
+### 实现安全  
 - **内存安全**: Rust 类型系统保证
 - **输入验证**: 严格的参数检查
 - **错误处理**: 完善的异常处理机制
@@ -281,8 +281,7 @@ let kzg_settings = load_trusted_setup_with_sppark()?;
 
 - **报告问题**: [GitHub Issues](../../issues)
 - **讨论交流**: [GitHub Discussions](../../discussions)
-- **技术支持**: [email]
-- **社交媒体**: [Twitter/X]
+
 
 ---
 
@@ -300,6 +299,4 @@ let kzg_settings = load_trusted_setup_with_sppark()?;
 - [Supranational](https://www.supranational.net/) - BLST 和 SPPARK 库
 - [Rust 社区](https://rust-lang.org/) - 优秀的编程语言和生态
 
----
 
-**开始你的 KZG 学习之旅吧！让我们一起探索现代密码学的精彩世界！**
