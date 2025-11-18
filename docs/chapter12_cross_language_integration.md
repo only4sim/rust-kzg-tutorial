@@ -6,7 +6,7 @@
 
 ## 12.1 跨语言集成架构概览
 
-### 🌐 多语言生态的重要性
+###  多语言生态的重要性
 
 在现代软件开发中，密码学库需要支持多种编程语言，以满足不同项目的需求：
 
@@ -27,7 +27,7 @@
 └─────────────────────────────────────┘
 ```
 
-### 🎯 跨语言集成的核心挑战
+###  跨语言集成的核心挑战
 
 1. **内存安全**: 跨语言边界的内存管理
 2. **类型转换**: 不同语言的类型系统映射
@@ -39,7 +39,7 @@
 
 ## 12.2 C语言FFI设计与实现
 
-### 🔧 FFI (Foreign Function Interface) 基础
+###  FFI (Foreign Function Interface) 基础
 
 FFI是Rust与其他语言交互的基础技术。让我们从安全的C绑定开始：
 
@@ -112,7 +112,7 @@ pub extern "C" fn c_kzg_free_trusted_setup(settings: *mut CKzgSettings) {
 }
 ```
 
-### 🛡️ 内存安全保证
+###  内存安全保证
 
 ```rust
 /// 安全的字节数组处理
@@ -182,7 +182,7 @@ pub extern "C" fn c_kzg_blob_to_commitment(
 }
 ```
 
-### 📋 C头文件生成
+###  C头文件生成
 
 ```c
 // include/rust_kzg.h - 自动生成的C头文件
@@ -253,7 +253,7 @@ CKzgResult c_kzg_verify_blob_proof(
 
 ## 12.3 Python PyO3 绑定实现
 
-### 🐍 PyO3 绑定架构
+###  PyO3 绑定架构
 
 PyO3是Rust与Python交互的现代化框架，提供了安全高效的绑定机制：
 
@@ -498,7 +498,7 @@ fn rust_kzg(py: Python, m: &PyModule) -> PyResult<()> {
 }
 ```
 
-### 🐍 Python使用示例
+###  Python使用示例
 
 ```python
 # examples/python_example.py
@@ -541,7 +541,7 @@ if __name__ == "__main__":
 
 ## 12.4 JavaScript WASM 集成
 
-### 🌐 WebAssembly 编译配置
+###  WebAssembly 编译配置
 
 WASM使Rust代码能在浏览器和Node.js中运行：
 
@@ -808,7 +808,7 @@ pub fn bytes_per_proof() -> usize { BYTES_PER_PROOF }
 pub fn field_elements_per_blob() -> usize { FIELD_ELEMENTS_PER_BLOB }
 ```
 
-### 🌐 JavaScript使用示例
+###  JavaScript使用示例
 
 ```javascript
 // examples/javascript_example.js
@@ -892,7 +892,7 @@ if (typeof window !== 'undefined') {
 
 ## 12.5 统一错误处理策略
 
-### 🛡️ 跨语言错误处理设计
+###  跨语言错误处理设计
 
 不同语言有不同的错误处理机制，我们需要设计统一的策略：
 
@@ -993,7 +993,7 @@ impl From<KzgError> for wasm_bindgen::JsValue {
 
 ## 12.6 性能基准与优化
 
-### ⚡ 跨语言性能对比
+###  跨语言性能对比
 
 不同绑定方式的性能特点：
 
@@ -1073,7 +1073,7 @@ criterion_group!(
 criterion_main!(benches);
 ```
 
-### 📊 性能优化建议
+###  性能优化建议
 
 | 绑定类型 | 性能开销 | 优化策略 |
 |----------|----------|----------|
@@ -1085,7 +1085,7 @@ criterion_main!(benches);
 
 ## 12.7 实际应用案例
 
-### 🌍 多语言生态示例
+###  多语言生态示例
 
 ```python
 # Python科学计算集成
@@ -1193,7 +1193,7 @@ document.getElementById('file-input').addEventListener('change', async (event) =
 
 ## 12.8 测试与验证
 
-### 🧪 跨语言一致性测试
+###  跨语言一致性测试
 
 ```rust
 // tests/cross_language_tests.rs
@@ -1290,7 +1290,7 @@ print("Python test passed")
 
 ## 12.9 部署与分发
 
-### 📦 构建配置
+###  构建配置
 
 ```toml
 # build.rs - 构建脚本
@@ -1345,7 +1345,7 @@ fn build_wasm(out_dir: &PathBuf) {
 }
 ```
 
-### 🚀 CI/CD 配置
+###  CI/CD 配置
 
 ```yaml
 # .github/workflows/cross_language.yml
@@ -1419,7 +1419,7 @@ jobs:
 
 ## 12.10 最佳实践总结
 
-### ✨ 跨语言集成的关键原则
+###  跨语言集成的关键原则
 
 1. **安全第一**: 严格的输入验证和内存管理
 2. **性能优化**: 批量操作减少跨语言调用开销
@@ -1427,14 +1427,14 @@ jobs:
 4. **API设计**: 符合目标语言的惯用法
 5. **测试覆盖**: 完整的跨语言一致性测试
 
-### 🛡️ 安全考虑
+###  安全考虑
 
 - **内存安全**: 使用RAII模式管理资源
 - **输入验证**: 在边界进行严格检查
 - **错误传播**: 不允许跨语言panic
 - **版本兼容**: 稳定的ABI设计
 
-### ⚡ 性能优化
+###  性能优化
 
 - **批量处理**: 减少单次调用开销
 - **内存复用**: 避免频繁分配/释放
@@ -1443,7 +1443,7 @@ jobs:
 
 ---
 
-## 🎯 本章总结
+##  本章总结
 
 通过本章学习，你掌握了：
 
@@ -1455,7 +1455,7 @@ jobs:
 6. **测试策略**: 确保多语言一致性的验证方法
 7. **部署实践**: 完整的构建和分发流程
 
-### 🚀 下一步学习
+###  下一步学习
 
 - **第13章**: 性能分析与调优技术
 - **第14章**: 安全性分析与加固
@@ -1465,4 +1465,4 @@ jobs:
 
 ---
 
-**🎉 恭喜完成第12章！你已经掌握了现代密码学库的跨语言集成核心技术！**
+** 恭喜完成第12章！你已经掌握了现代密码学库的跨语言集成核心技术！**

@@ -1,6 +1,6 @@
 # 第8章：BLST 后端深度剖析
 
-## 🎯 学习目标
+##  学习目标
 
 通过本章学习，你将：
 - 深入理解 BLST 库的性能优势和设计原理
@@ -13,7 +13,7 @@
 
 ## 8.1 BLST 库介绍与选择理由
 
-### 📊 BLST vs 其他椭圆曲线库的性能对比
+###  BLST vs 其他椭圆曲线库的性能对比
 
 BLST (BLS12-381 Signature Library) 是由 Supranational 公司开发的高性能椭圆曲线密码学库，专门针对 BLS12-381 曲线进行了深度优化。
 
@@ -53,19 +53,19 @@ BLST (BLS12-381 Signature Library) 是由 Supranational 公司开发的高性能
    - 在以太坊 2.0 等关键系统中广泛使用
    - 严格的测试覆盖率 (>95%)
 
-### 🏗️ Supranational 公司的优化策略分析
+###  Supranational 公司的优化策略分析
 
 #### 多层次优化架构
 
 ```
 ┌─────────────────────────────────────┐
-│          高级算法层                  │  ← 数学算法优化
+│          高级算法层                  │   数学算法优化
 ├─────────────────────────────────────┤
-│          中间抽象层                  │  ← API 设计优化  
+│          中间抽象层                  │   API 设计优化  
 ├─────────────────────────────────────┤
-│          底层实现层                  │  ← 汇编级优化
+│          底层实现层                  │   汇编级优化
 ├─────────────────────────────────────┤
-│          硬件适配层                  │  ← 平台特定优化
+│          硬件适配层                  │   平台特定优化
 └─────────────────────────────────────┘
 ```
 
@@ -90,7 +90,7 @@ BLST (BLS12-381 Signature Library) 是由 Supranational 公司开发的高性能
 
 ## 8.2 Rust-BLST 绑定层深度解析
 
-### 🔍 核心类型实现剖析
+###  核心类型实现剖析
 
 #### FsFr (标量域元素) 实现
 
@@ -286,7 +286,7 @@ impl G1 for FsG1 {
 }
 ```
 
-### 🔧 错误处理的最佳实践
+###  错误处理的最佳实践
 
 #### 输入验证策略
 
@@ -354,7 +354,7 @@ pub fn deserialize_g1_point(bytes: &[u8]) -> Result<FsG1, String> {
 
 ## 8.3 关键算法实现深度分析
 
-### ⚡ FFT (快速傅里叶变换) 的多线程优化
+###  FFT (快速傅里叶变换) 的多线程优化
 
 #### 基础 FFT 实现
 
@@ -485,7 +485,7 @@ fn reverse_bits(mut x: usize, bit_len: usize) -> usize {
 const PARALLEL_THRESHOLD: usize = 1024; // 经验值，可根据硬件调整
 ```
 
-### 🚀 MSM (多标量乘法) 的向量化处理
+###  MSM (多标量乘法) 的向量化处理
 
 #### Pippenger 算法的优化实现
 
@@ -644,7 +644,7 @@ fn aggregate_buckets(buckets: &[FsG1]) -> FsG1 {
 }
 ```
 
-### 🧠 内存布局优化策略
+###  内存布局优化策略
 
 #### 缓存友好的数据结构设计
 
@@ -711,7 +711,7 @@ impl FsG1 {
 
 ## 8.4 错误处理与边界情况
 
-### 🚨 常见错误场景与解决方案
+###  常见错误场景与解决方案
 
 #### Invalid Scalar 错误的深度分析
 
@@ -885,7 +885,7 @@ impl PerformanceProfiler {
 }
 ```
 
-### 🛡️ 生产环境最佳实践
+###  生产环境最佳实践
 
 #### 全面的输入验证策略
 
@@ -949,7 +949,7 @@ pub fn validate_kzg_inputs(
 
 ---
 
-## 🔬 实践练习
+##  实践练习
 
 ### 练习 8.1: BLST 性能基准测试
 
@@ -960,7 +960,7 @@ use std::time::Instant;
 use rust_kzg_blst::*;
 
 fn benchmark_blst_operations() -> Result<(), Box<dyn std::error::Error>> {
-    println!("🚀 BLST 性能基准测试");
+    println!(" BLST 性能基准测试");
     println!("{}", "=".repeat(50));
     
     // 测试数据准备
@@ -968,7 +968,7 @@ fn benchmark_blst_operations() -> Result<(), Box<dyn std::error::Error>> {
     let iterations = 100;
     
     for size in sizes {
-        println!("\n📊 测试大小: {} 个元素", size);
+        println!("\n 测试大小: {} 个元素", size);
         
         // 标量乘法测试
         let scalars: Vec<FsFr> = (0..size)
@@ -1011,20 +1011,20 @@ fn benchmark_blst_operations() -> Result<(), Box<dyn std::error::Error>> {
 
 ```rust
 fn test_error_handling() -> Result<(), Box<dyn std::error::Error>> {
-    println!("🛡️ 错误处理验证测试");
+    println!(" 错误处理验证测试");
     
     // 测试无效标量
     let invalid_scalar_bytes = [0xFF; 32]; // 明显超过模数
     match FsFr::from_bytes(&invalid_scalar_bytes) {
         Ok(_) => panic!("Should have failed for invalid scalar"),
-        Err(e) => println!("✅ 正确捕获无效标量错误: {}", e),
+        Err(e) => println!(" 正确捕获无效标量错误: {}", e),
     }
     
     // 测试无效点坐标
     let invalid_point_bytes = [0xFF; 48];
     match FsG1::from_bytes(&invalid_point_bytes) {
         Ok(_) => panic!("Should have failed for invalid point"),
-        Err(e) => println!("✅ 正确捕获无效点错误: {}", e),
+        Err(e) => println!(" 正确捕获无效点错误: {}", e),
     }
     
     // 测试边界情况
@@ -1032,9 +1032,9 @@ fn test_error_handling() -> Result<(), Box<dyn std::error::Error>> {
     match FsFr::from_bytes(&zero_bytes) {
         Ok(zero_fr) => {
             assert_eq!(zero_fr, FsFr::zero());
-            println!("✅ 零元素处理正确");
+            println!(" 零元素处理正确");
         }
-        Err(e) => println!("❌ 零元素处理失败: {}", e),
+        Err(e) => println!(" 零元素处理失败: {}", e),
     }
     
     Ok(())
@@ -1043,7 +1043,7 @@ fn test_error_handling() -> Result<(), Box<dyn std::error::Error>> {
 
 ---
 
-## 📚 本章总结
+##  本章总结
 
 通过本章的深入学习，我们全面理解了：
 
@@ -1054,4 +1054,4 @@ fn test_error_handling() -> Result<(), Box<dyn std::error::Error>> {
 
 BLST 后端是 rust-kzg 库推荐的生产环境选择，其优秀的性能表现和安全性保证使其成为构建高性能密码学应用的理想基础。
 
-**🎉 下一章预告**: 第9章将探讨 GPU 加速技术，学习如何使用 SPPARK 和 WLC MSM 实现更极致的性能优化！
+** 下一章预告**: 第9章将探讨 GPU 加速技术，学习如何使用 SPPARK 和 WLC MSM 实现更极致的性能优化！

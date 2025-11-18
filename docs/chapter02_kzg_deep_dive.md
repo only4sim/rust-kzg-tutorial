@@ -6,7 +6,7 @@
 
 ## 2.1 KZG 方案的数学原理
 
-### 🧮 Kate-Zaverucha-Goldberg 方案推导
+###  Kate-Zaverucha-Goldberg 方案推导
 
 KZG 承诺方案是由 Kate、Zaverucha 和 Goldberg 在 2010 年提出的一种**多项式承诺方案**。它允许承诺者对一个多项式进行承诺，并在后续证明该多项式在某个特定点的取值，而无需透露整个多项式。
 
@@ -24,13 +24,13 @@ KZG 承诺方案是由 Kate、Zaverucha 和 Goldberg 在 2010 年提出的一种
 ```
 // 实际可运行的性能分析演示
 fn demonstrate_performance_analysis() -> Result<(), Box<dyn std::error::Error>> {
-    println!("⚡ 4. 性能分析和对比");
+    println!(" 4. 性能分析和对比");
     println!("{}", "-".repeat(40));
     
     let kzg_settings = load_trusted_setup_from_file()?;
     
     // 测试标准大小的性能
-    println!("   📊 测试标准 EIP-4844 blob 大小：");
+    println!("    测试标准 EIP-4844 blob 大小：");
     
     let blob = create_test_blob()?;
     
@@ -54,12 +54,12 @@ fn demonstrate_performance_analysis() -> Result<(), Box<dyn std::error::Error>> 
     println!("      - 验证时间：{:?}", verify_time);
     println!("      - 总时间：{:?}", commit_time + proof_time + verify_time);
     
-    println!("   💡 性能特点分析：");
+    println!("    性能特点分析：");
     println!("      - 承诺生成：O(n) 线性时间，n为多项式度数");
     println!("      - 证明生成：依赖于FFT，时间复杂度 O(n log n)");
     println!("      - 验证时间：恒定时间O(1)，与数据大小无关");
     
-    println!("   🚀 性能优化策略：");
+    println!("    性能优化策略：");
     println!("      - 预计算：重用受信任设置");
     println!("      - 批量操作：同时处理多个证明");
     println!("      - 并行化：利用多核处理器");
@@ -68,7 +68,7 @@ fn demonstrate_performance_analysis() -> Result<(), Box<dyn std::error::Error>> 
     Ok(())
 }
 
-### 📊 KZG 方案的优势总结
+###  KZG 方案的优势总结
 
 通过上面的详细分析，我们可以总结 KZG 方案的核心优势：
 
@@ -77,13 +77,13 @@ fn demonstrate_performance_analysis() -> Result<(), Box<dyn std::error::Error>> 
 | **承诺大小** | 恒定 (48 字节) | O(log n) |
 | **证明大小** | 恒定 (48 字节) | O(log n) |
 | **验证时间** | 恒定 | O(log n) |
-| **同态性** | ✅ 支持 | ❌ 不支持 |
-| **批量验证** | ✅ 高效 | ⚠️ 有限 |
-| **受信任设置** | ⚠️ 需要 | ✅ 不需要 |
+| **同态性** |  支持 |  不支持 |
+| **批量验证** |  高效 |  有限 |
+| **受信任设置** |  需要 |  不需要 |
 
 ---
 
-## 🔬 实践练习
+##  实践练习
 
 ### 练习 2.1: 手工验证 KZG 证明
 
@@ -124,25 +124,25 @@ fn batch_proof_exercise() {
 
 ---
 
-## 📚 本章总结
+##  本章总结
 
 在本章中，我们深入探讨了 KZG 承诺方案的核心原理：
 
-### 🎯 关键收获
+###  关键收获
 
 1. **数学基础**: 理解了 KZG 方案基于椭圆曲线配对的数学构造
 2. **算法流程**: 掌握了承诺-证明-验证的完整算法
 3. **安全性分析**: 了解了受信任设置的重要性和威胁模型
 4. **实现细节**: 通过代码理解了数学概念到实际实现的映射
 
-### 🔍 核心概念
+###  核心概念
 
 - **受信任设置**: $SRS = \{g_1^{\tau^i}\}$ 是方案安全性的基础
 - **承诺简洁性**: 无论多项式多复杂，承诺都是恒定大小
 - **证明高效性**: 验证时间与多项式大小无关
 - **同态性质**: 支持多项式的线性组合运算
 
-### 🚀 下一步学习
+###  下一步学习
 
 在下一章中，我们将探讨：
 - **第7章**: BLST 后端的具体实现细节
@@ -202,7 +202,7 @@ e(C - g_1^y, g_2) = e(π, g_2^τ - g_2^z)
 e(g_1^{f(τ) - y}, g_2) = e(g_1^{\frac{f(τ) - y}{τ - z}}, g_2^{τ - z})
 ```
 
-### 🔍 数学正确性证明
+###  数学正确性证明
 
 让我们验证为什么这个方案是正确的：
 
@@ -235,7 +235,7 @@ e(g_1^{\frac{f(τ) - y}{τ - z}}, g_2^{τ - z}) = e(g_1, g_2)^{\frac{f(τ) - y}{
 
 因此等式成立，证明了方案的正确性。
 
-### 💡 代码中的数学映射
+###  代码中的数学映射
 
 让我们看看这些数学概念如何在实际的 EIP-4844 KZG 实现中体现：
 
@@ -252,23 +252,23 @@ use rust_kzg_blst::types::{kzg_settings::FsKZGSettings, fr::FsFr};
 use std::time::Instant;
 
 fn demonstrate_kzg_mathematics() -> Result<(), Box<dyn std::error::Error>> {
-    println!("📐 1. KZG 数学原理演示");
+    println!(" 1. KZG 数学原理演示");
     println!("{}", "-".repeat(40));
     
     // 1. 受信任设置 - 相当于 SRS = (g₁, g₁^τ, g₁^τ², ...)
     println!("� 步骤 1: 加载受信任设置");
     let kzg_settings = load_trusted_setup_from_file()?;
-    println!("   ✅ SRS 加载成功 (包含 τ 的预计算幂次)");
+    println!("    SRS 加载成功 (包含 τ 的预计算幂次)");
     
     // 2. 多项式表示 - Blob 数据作为多项式系数
-    println!("\n🔢 步骤 2: 准备多项式数据");
+    println!("\n 步骤 2: 准备多项式数据");
     let blob = create_test_blob()?;
-    println!("   📝 Blob 包含 {} 个域元素 (多项式系数)", blob.len());
-    println!("   💡 表示多项式: f(x) = a₀ + a₁x + a₂x² + ... + a₄₀₉₅x⁴⁰⁹⁵");
+    println!("    Blob 包含 {} 个域元素 (多项式系数)", blob.len());
+    println!("    表示多项式: f(x) = a₀ + a₁x + a₂x² + ... + a₄₀₉₅x⁴⁰⁹⁵");
     
     // 3. 承诺计算 - C = g₁^f(τ) = ∑ aᵢ * g₁^(τⁱ)
-    println!("\n🔐 步骤 3: 承诺计算");
-    println!("   💡 多项式承诺概念：");
+    println!("\n 步骤 3: 承诺计算");
+    println!("    多项式承诺概念：");
     println!("      - 将数据表示为多项式 f(x) = a₀ + a₁x + a₂x² + ...");
     println!("      - 承诺：C = [f(τ)]₁ = a₀G₁ + a₁(τG₁) + a₂(τ²G₁) + ...");
     println!("      - 其中 τ 是受信任设置中的秘密值");
@@ -277,14 +277,14 @@ fn demonstrate_kzg_mathematics() -> Result<(), Box<dyn std::error::Error>> {
     let commitment = blob_to_kzg_commitment_rust(&blob, &kzg_settings)?;
     let commit_time = start.elapsed();
     
-    println!("   ✅ 成功生成多项式承诺");
+    println!("    成功生成多项式承诺");
     println!("      - 承诺是一个 G₁ 群元素（48字节）");
     println!("      - 计算时间：{:?}", commit_time);
     
     // 4. 证明生成 - 证明 blob 对应此承诺
     println!("\n� 步骤 4: 证明生成");
-    println!("   🔗 椭圆曲线配对验证：");
-    println!("      - 使用双线性配对 e: G₁ × G₂ → Gₜ");
+    println!("    椭圆曲线配对验证：");
+    println!("      - 使用双线性配对 e: G₁ × G₂  Gₜ");
     println!("      - 验证等式：e(C - [f(z)]₁, G₂) = e(π, [τ - z]₂)");
     println!("      - 这保证了承诺确实对应于声称的多项式");
     
@@ -292,20 +292,20 @@ fn demonstrate_kzg_mathematics() -> Result<(), Box<dyn std::error::Error>> {
     let proof = compute_blob_kzg_proof_rust(&blob, &commitment, &kzg_settings)?;
     let proof_time = start.elapsed();
     
-    println!("   ✅ 证明生成完成，时间：{:?}", proof_time);
+    println!("    证明生成完成，时间：{:?}", proof_time);
     
     // 5. 验证 - 配对验证证明的正确性
-    println!("\n🔍 步骤 5: 配对验证");
+    println!("\n 步骤 5: 配对验证");
     let start = Instant::now();
     let is_valid = verify_blob_kzg_proof_rust(&blob, &commitment, &proof, &kzg_settings)?;
     let verify_time = start.elapsed();
     
     println!("   {} 验证结果: {} (时间: {:?})", 
-             if is_valid { "✅" } else { "❌" },
+             if is_valid { "" } else { "" },
              if is_valid { "证明有效" } else { "证明无效" },
              verify_time);
     
-    println!("\n🎉 KZG 数学原理演示完成！");
+    println!("\n KZG 数学原理演示完成！");
     Ok(())
 }
 
@@ -349,7 +349,7 @@ fn create_test_blob() -> Result<Vec<FsFr>, String> {
 
 ## 2.2 受信任设置的安全性分析
 
-### 🔒 受信任设置的重要性
+###  受信任设置的重要性
 
 受信任设置是 KZG 方案的关键组件，其安全性直接决定了整个系统的安全性。
 
@@ -374,19 +374,19 @@ fn demonstrate_trusted_setup_security() -> Result<(), Box<dyn std::error::Error>
     
     // 加载并验证受信任设置
     let _kzg_settings = load_trusted_setup_from_file()?;
-    println!("   ✅ 受信任设置加载成功");
+    println!("    受信任设置加载成功");
     
-    println!("   🎯 安全假设分析：");
+    println!("    安全假设分析：");
     println!("      - 基于椭圆曲线离散对数难题（ECDLP）");
     println!("      - 秘密值 τ 永远不能被任何人知晓");
     println!("      - 必须安全销毁设置过程中的所有中间状态");
     
-    println!("   ⚠️  风险评估：");
+    println!("     风险评估：");
     println!("      - 如果 τ 泄露，攻击者可以伪造任意证明");
     println!("      - 需要信任设置仪式的组织者");
     println!("      - 可通过多方计算（MPC）降低信任风险");
     
-    println!("   🛡️  缓解措施：");
+    println!("     缓解措施：");
     println!("      - 使用可验证的设置仪式");
     println!("      - 多个独立参与者的设置");
     println!("      - 公开透明的设置过程");
@@ -401,7 +401,7 @@ fn demonstrate_trusted_setup_security() -> Result<(), Box<dyn std::error::Error>
 }
 ```
 
-### 🌐 多方计算仪式 (MPC Ceremony)
+###  多方计算仪式 (MPC Ceremony)
 
 为了增强受信任设置的安全性，现代实践中通常采用**多方计算仪式**：
 
@@ -419,21 +419,21 @@ fn demonstrate_trusted_setup_security() -> Result<(), Box<dyn std::error::Error>
 
 ## 2.3 承诺-证明-验证算法详解
 
-### 🔄 完整的 KZG 工作流程
+###  完整的 KZG 工作流程
 
 让我们通过详细的代码示例来理解 KZG 的每个步骤：
 
 ```rust
 // 实际可运行的完整 KZG 工作流程演示
 fn demonstrate_complete_workflow() -> Result<(), Box<dyn std::error::Error>> {
-    println!("⚙️ 3. 完整 KZG 工作流程演示");
+    println!(" 3. 完整 KZG 工作流程演示");
     println!("{}", "-".repeat(40));
     
     let kzg_settings = load_trusted_setup_from_file()?;
     let blob = create_test_blob()?;
     
     // 步骤1：数据准备
-    println!("   📊 步骤1：数据准备");
+    println!("    步骤1：数据准备");
     println!("      - 原始数据：{} 个域元素", blob.len());
     println!("      - 表示为多项式的系数");
     
@@ -452,17 +452,17 @@ fn demonstrate_complete_workflow() -> Result<(), Box<dyn std::error::Error>> {
     println!("      - 证明生成时间：{:?}", proof_time);
     
     // 步骤4：验证
-    println!("   🔍 步骤4：验证证明");
+    println!("    步骤4：验证证明");
     let start = Instant::now();
     let is_valid = verify_blob_kzg_proof_rust(&blob, &commitment, &proof, &kzg_settings)?;
     let verify_time = start.elapsed();
     
     if is_valid {
-        println!("      ✅ 验证成功！时间：{:?}", verify_time);
+        println!("       验证成功！时间：{:?}", verify_time);
         println!("      - 证明了承诺确实对应这个 blob");
         println!("      - 验证过程无需访问原始数据");
     } else {
-        println!("      ❌ 验证失败");
+        println!("       验证失败");
     }
     
     println!("   � 数据效率：");
@@ -475,7 +475,7 @@ fn demonstrate_complete_workflow() -> Result<(), Box<dyn std::error::Error>> {
 }
 ```
 
-### 📊 KZG 方案的优势总结
+###  KZG 方案的优势总结
 
 通过上面的详细分析，我们可以总结 KZG 方案的核心优势：
 
@@ -484,13 +484,13 @@ fn demonstrate_complete_workflow() -> Result<(), Box<dyn std::error::Error>> {
 | **承诺大小** | 恒定 (48 字节) | O(log n) |
 | **证明大小** | 恒定 (48 字节) | O(log n) |
 | **验证时间** | 恒定 | O(log n) |
-| **同态性** | ✅ 支持 | ❌ 不支持 |
-| **批量验证** | ✅ 高效 | ⚠️ 有限 |
-| **受信任设置** | ⚠️ 需要 | ✅ 不需要 |
+| **同态性** |  支持 |  不支持 |
+| **批量验证** |  高效 |  有限 |
+| **受信任设置** |  需要 |  不需要 |
 
 ---
 
-## 🔬 实践练习
+##  实践练习
 
 ### 练习 2.1: 手工验证 KZG 证明
 
@@ -531,25 +531,25 @@ fn batch_proof_exercise() {
 
 ---
 
-## 📚 本章总结
+##  本章总结
 
 在本章中，我们深入探讨了 KZG 承诺方案的核心原理：
 
-### 🎯 关键收获
+###  关键收获
 
 1. **数学基础**: 理解了 KZG 方案基于椭圆曲线配对的数学构造
 2. **算法流程**: 掌握了承诺-证明-验证的完整算法
 3. **安全性分析**: 了解了受信任设置的重要性和威胁模型
 4. **实现细节**: 通过代码理解了数学概念到实际实现的映射
 
-### 🔍 核心概念
+###  核心概念
 
 - **受信任设置**: $SRS = \{g_1^{\tau^i}\}$ 是方案安全性的基础
 - **承诺简洁性**: 无论多项式多复杂，承诺都是恒定大小
 - **证明高效性**: 验证时间与多项式大小无关
 - **同态性质**: 支持多项式的线性组合运算
 
-### 🚀 下一步学习
+###  下一步学习
 
 在下一章中，我们将探讨：
 - **第7章**: BLST 后端的具体实现细节

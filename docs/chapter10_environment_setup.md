@@ -6,7 +6,7 @@
 
 ## 10.1 开发环境配置
 
-### 🛠️ 系统要求
+###  系统要求
 
 在开始之前，确保你的系统满足以下要求：
 
@@ -29,7 +29,7 @@ source ~/.cargo/env
 rustup component add rustfmt clippy
 ```
 
-### 📦 项目获取与编译
+###  项目获取与编译
 
 #### 1. 克隆项目仓库
 
@@ -97,7 +97,7 @@ curl -L -o trusted_setup.txt \
 cd ..
 ```
 
-### 🔧 IDE 配置 (可选但推荐)
+###  IDE 配置 (可选但推荐)
 
 #### VS Code 配置
 
@@ -142,7 +142,7 @@ cd ..
 
 ## 10.2 第一个 KZG 程序
 
-### 🚀 Hello KZG World
+###  Hello KZG World
 
 让我们从最简单的示例开始：
 
@@ -163,36 +163,36 @@ use rust_kzg_blst::{
 use std::time::Instant;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    println!("🎯 Hello KZG World!");
+    println!(" Hello KZG World!");
     println!("{}", "=".repeat(50));
     println!("这是你的第一个 KZG 程序，让我们开始吧！\n");
 
     // 1. 加载受信任设置
-    println!("📁 步骤 1: 加载受信任设置...");
+    println!(" 步骤 1: 加载受信任设置...");
     let kzg_settings = load_trusted_setup_from_file()?;
-    println!("✅ 受信任设置加载成功!\n");
+    println!(" 受信任设置加载成功!\n");
 
     // 2. 创建测试数据 (Blob)
-    println!("🔢 步骤 2: 创建测试 Blob 数据...");
+    println!(" 步骤 2: 创建测试 Blob 数据...");
     let blob = create_test_blob()?;
-    println!("✅ 测试 Blob 创建成功! (包含 {} 个域元素)\n", blob.len());
+    println!(" 测试 Blob 创建成功! (包含 {} 个域元素)\n", blob.len());
 
     // 3. 生成承诺
-    println!("🔐 步骤 3: 生成 KZG 承诺...");
+    println!(" 步骤 3: 生成 KZG 承诺...");
     let start = Instant::now();
     let commitment = blob_to_kzg_commitment_rust(&blob, &kzg_settings)?;
     let commitment_time = start.elapsed();
-    println!("✅ KZG 承诺生成成功! 耗时: {:?}\n", commitment_time);
+    println!(" KZG 承诺生成成功! 耗时: {:?}\n", commitment_time);
 
     // 4. 生成证明
-    println!("📝 步骤 4: 生成 KZG 证明...");
+    println!(" 步骤 4: 生成 KZG 证明...");
     let start = Instant::now();
     let proof = compute_blob_kzg_proof_rust(&blob, &commitment, &kzg_settings)?;
     let proof_time = start.elapsed();
-    println!("✅ KZG 证明生成成功! 耗时: {:?}\n", proof_time);
+    println!(" KZG 证明生成成功! 耗时: {:?}\n", proof_time);
 
     // 5. 验证证明
-    println!("🔍 步骤 5: 验证 KZG 证明...");
+    println!(" 步骤 5: 验证 KZG 证明...");
     let start = Instant::now();
     let is_valid = verify_blob_kzg_proof_rust(
         &blob, &commitment, &proof, &kzg_settings
@@ -200,31 +200,31 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let verify_time = start.elapsed();
     
     if is_valid {
-        println!("🎉 证明验证成功! 耗时: {:?}", verify_time);
+        println!(" 证明验证成功! 耗时: {:?}", verify_time);
         println!("\n{}", "=".repeat(50));
-        println!("🏆 恭喜! 你已经成功完成了第一个 KZG 操作!");
+        println!(" 恭喜! 你已经成功完成了第一个 KZG 操作!");
         println!("   - 你学会了如何加载受信任设置");
         println!("   - 你学会了如何创建有效的 Blob 数据");
         println!("   - 你学会了 KZG 承诺-证明-验证的完整流程");
         println!("{}", "=".repeat(50));
     } else {
-        println!("❌ 证明验证失败 - 这不应该发生!");
+        println!(" 证明验证失败 - 这不应该发生!");
         return Err("验证失败".into());
     }
 
     // 6. 额外演示：性能统计
-    println!("\n📊 性能统计:");
-    println!("   🔐 承诺生成: {:?}", commitment_time);
-    println!("   📝 证明生成: {:?}", proof_time);
-    println!("   🔍 证明验证: {:?}", verify_time);
+    println!("\n 性能统计:");
+    println!("    承诺生成: {:?}", commitment_time);
+    println!("    证明生成: {:?}", proof_time);
+    println!("    证明验证: {:?}", verify_time);
     println!("   ⏱️ 总耗时: {:?}", commitment_time + proof_time + verify_time);
 
     // 7. 演示数据大小
-    println!("\n📏 数据大小统计:");
-    println!("   📊 Blob 数据: {} 个域元素 (≈ 128KB)", blob.len());
-    println!("   🔐 承诺大小: 48 字节 (G1 群元素)");
-    println!("   📝 证明大小: 48 字节 (G1 群元素)");
-    println!("   💾 压缩比: {:.2}%", (96.0 / (blob.len() * 32) as f64) * 100.0);
+    println!("\n 数据大小统计:");
+    println!("    Blob 数据: {} 个域元素 (≈ 128KB)", blob.len());
+    println!("    承诺大小: 48 字节 (G1 群元素)");
+    println!("    证明大小: 48 字节 (G1 群元素)");
+    println!("    压缩比: {:.2}%", (96.0 / (blob.len() * 32) as f64) * 100.0);
 
     Ok(())
 }
@@ -241,22 +241,22 @@ fn load_trusted_setup_from_file() -> Result<FsKZGSettings, Box<dyn std::error::E
         "../src/trusted_setup.txt",
     ];
 
-    println!("🔍 搜索受信任设置文件...");
+    println!(" 搜索受信任设置文件...");
     for path in &possible_paths {
         if std::path::Path::new(path).exists() {
-            println!("   ✅ 找到文件: {}", path);
+            println!("    找到文件: {}", path);
             return Ok(load_trusted_setup_filename_rust(path)?);
         } else {
-            println!("   ❌ 未找到: {}", path);
+            println!("    未找到: {}", path);
         }
     }
 
     Err(format!(
-        "❌ 未找到受信任设置文件!\n\
+        " 未找到受信任设置文件!\n\
          请确保以下任一路径存在 trusted_setup.txt:\n\
          {:#?}\n\
          \n\
-         📥 下载命令:\n\
+          下载命令:\n\
          mkdir -p assets\n\
          cd assets\n\
          wget https://github.com/ethereum/c-kzg-4844/raw/main/src/trusted_setup.txt",
@@ -269,7 +269,7 @@ fn load_trusted_setup_from_file() -> Result<FsKZGSettings, Box<dyn std::error::E
 fn create_test_blob() -> Result<Vec<FsFr>, String> {
     let mut blob = Vec::with_capacity(FIELD_ELEMENTS_PER_BLOB);
 
-    println!("   🔢 生成 {} 个域元素...", FIELD_ELEMENTS_PER_BLOB);
+    println!("    生成 {} 个域元素...", FIELD_ELEMENTS_PER_BLOB);
     
     for i in 0..FIELD_ELEMENTS_PER_BLOB {
         // 创建有效的域元素
@@ -288,7 +288,7 @@ fn create_test_blob() -> Result<Vec<FsFr>, String> {
         bytes[31] = value;
         
         let element = FsFr::from_bytes(&bytes)
-            .map_err(|e| format!("❌ 创建第 {} 个域元素失败: {}", i, e))?;
+            .map_err(|e| format!(" 创建第 {} 个域元素失败: {}", i, e))?;
         blob.push(element);
         
         // 每完成 1000 个元素就报告进度
@@ -297,12 +297,12 @@ fn create_test_blob() -> Result<Vec<FsFr>, String> {
         }
     }
 
-    println!("   ✅ 所有域元素创建完成!");
+    println!("    所有域元素创建完成!");
     Ok(blob)
 }
 ```
 
-### 🏃‍♂️ 运行第一个程序
+### ‍️ 运行第一个程序
 
 ```bash
 # 创建示例文件
@@ -314,54 +314,54 @@ EOF
 cargo run --example hello_kzg
 
 # 预期输出:
-# 🎯 Hello KZG World!
+#  Hello KZG World!
 # ==================================================
 # 这是你的第一个 KZG 程序，让我们开始吧！
 # 
 # � 步骤 1: 加载受信任设置...
-# �🔍 搜索受信任设置文件...
-#    ✅ 找到文件: ./assets/trusted_setup.txt
-# ✅ 受信任设置加载成功!
+# � 搜索受信任设置文件...
+#     找到文件: ./assets/trusted_setup.txt
+#  受信任设置加载成功!
 # 
-# 🔢 步骤 2: 创建测试 Blob 数据...
-#    🔢 生成 4096 个域元素...
+#  步骤 2: 创建测试 Blob 数据...
+#     生成 4096 个域元素...
 #      进度: 1000/4096
 #      进度: 2000/4096
 #      进度: 3000/4096
 #      进度: 4000/4096
-#    ✅ 所有域元素创建完成!
-# ✅ 测试 Blob 创建成功! (包含 4096 个域元素)
+#     所有域元素创建完成!
+#  测试 Blob 创建成功! (包含 4096 个域元素)
 # 
-# 🔐 步骤 3: 生成 KZG 承诺...
-# ✅ KZG 承诺生成成功! 耗时: 14.492ms
+#  步骤 3: 生成 KZG 承诺...
+#  KZG 承诺生成成功! 耗时: 14.492ms
 # 
-# 📝 步骤 4: 生成 KZG 证明...
-# ✅ KZG 证明生成成功! 耗时: 120.885ms
+#  步骤 4: 生成 KZG 证明...
+#  KZG 证明生成成功! 耗时: 120.885ms
 # 
-# 🔍 步骤 5: 验证 KZG 证明...
-# 🎉 证明验证成功! 耗时: 9.422ms
+#  步骤 5: 验证 KZG 证明...
+#  证明验证成功! 耗时: 9.422ms
 # 
 # ==================================================
-# 🏆 恭喜! 你已经成功完成了第一个 KZG 操作!
+#  恭喜! 你已经成功完成了第一个 KZG 操作!
 #    - 你学会了如何加载受信任设置
 #    - 你学会了如何创建有效的 Blob 数据
 #    - 你学会了 KZG 承诺-证明-验证的完整流程
 # ==================================================
 # 
-# 📊 性能统计:
-#    🔐 承诺生成: 14.492ms
-#    📝 证明生成: 120.885ms
-#    🔍 证明验证: 9.422ms
+#  性能统计:
+#     承诺生成: 14.492ms
+#     证明生成: 120.885ms
+#     证明验证: 9.422ms
 #    ⏱️ 总耗时: 144.799ms
 # 
-# 📏 数据大小统计:
-#    📊 Blob 数据: 4096 个域元素 (≈ 128KB)
-#    🔐 承诺大小: 48 字节 (G1 群元素)
-#    📝 证明大小: 48 字节 (G1 群元素)
-#    💾 压缩比: 0.07%
+#  数据大小统计:
+#     Blob 数据: 4096 个域元素 (≈ 128KB)
+#     承诺大小: 48 字节 (G1 群元素)
+#     证明大小: 48 字节 (G1 群元素)
+#     压缩比: 0.07%
 ```
 
-### 📖 代码详解
+###  代码详解
 
 #### 1. 受信任设置加载
 ```rust
@@ -406,7 +406,7 @@ let is_valid = verify_blob_kzg_proof_rust(&blob, &commitment, &proof, &kzg_setti
 
 ## 10.3 常见问题与解决方案
 
-### ❌ 编译错误排查
+###  编译错误排查
 
 #### 问题 1: "Invalid scalar" 错误
 ```
@@ -416,11 +416,11 @@ Error: Invalid scalar
 **原因**: 字节数组不表示有效的域元素
 **解决方案**:
 ```rust
-// ❌ 错误的做法
+//  错误的做法
 let invalid_bytes = [255u8; 32]; // 可能超出域大小
 let scalar = FsFr::from_bytes(&invalid_bytes)?; // 可能失败
 
-// ✅ 正确的做法  
+//  正确的做法  
 let mut valid_bytes = [0u8; 32];
 valid_bytes[31] = 42; // 使用小值
 let scalar = FsFr::from_bytes(&valid_bytes)?; // 安全
@@ -468,7 +468,7 @@ xcode-select --install
 # 或安装完整的 Xcode
 ```
 
-### 🐛 运行时错误处理
+###  运行时错误处理
 
 #### 内存不足
 ```rust
@@ -500,7 +500,7 @@ fn process_blobs_parallel(blobs: &[Vec<FsFr>]) -> Vec<Result<G1, String>> {
 
 ## 10.4 调试技巧与工具
 
-### 🔍 调试器使用
+###  调试器使用
 
 #### LLDB 调试器 (推荐)
 ```bash
@@ -525,7 +525,7 @@ gdb target/debug/examples/hello_kzg
 (gdb) run
 ```
 
-### 📝 日志输出最佳实践
+###  日志输出最佳实践
 
 ```rust
 // 添加到 Cargo.toml
@@ -540,7 +540,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // 初始化日志
     env_logger::init();
     
-    info!("🚀 开始 KZG 操作");
+    info!(" 开始 KZG 操作");
     
     let kzg_settings = load_trusted_setup_from_file()?;
     debug!("受信任设置包含 {} 个 G1 点", kzg_settings.g1_count());
@@ -554,7 +554,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 // RUST_LOG=debug cargo run --example hello_kzg
 ```
 
-### 🧪 单元测试编写
+###  单元测试编写
 
 ```rust
 #[cfg(test)]
@@ -564,7 +564,7 @@ mod tests {
 
     #[test]
     fn test_blob_creation() -> Result<(), String> {
-        println!("🧪 测试 Blob 创建...");
+        println!(" 测试 Blob 创建...");
         let blob = create_test_blob()?;
         
         // 验证 blob 大小
@@ -575,13 +575,13 @@ mod tests {
             println!("   元素 {}: {:?}", i, element.is_zero());
         }
         
-        println!("✅ Blob 创建测试通过!");
+        println!(" Blob 创建测试通过!");
         Ok(())
     }
 
     #[test] 
     fn test_kzg_commitment_consistency() -> Result<(), Box<dyn std::error::Error>> {
-        println!("🧪 测试 KZG 承诺一致性...");
+        println!(" 测试 KZG 承诺一致性...");
         
         // 注意：这个测试需要受信任设置文件存在
         if let Ok(settings) = load_trusted_setup_from_file() {
@@ -592,9 +592,9 @@ mod tests {
             let commitment2 = blob_to_kzg_commitment_rust(&blob, &settings)?;
             
             assert!(commitment1.equals(&commitment2), "承诺应该保持一致");
-            println!("✅ KZG 承诺一致性测试通过!");
+            println!(" KZG 承诺一致性测试通过!");
         } else {
-            println!("⚠️  跳过 KZG 测试 (未找到受信任设置文件)");
+            println!("  跳过 KZG 测试 (未找到受信任设置文件)");
         }
         
         Ok(())
@@ -602,7 +602,7 @@ mod tests {
 
     #[test]
     fn test_full_kzg_workflow() -> Result<(), Box<dyn std::error::Error>> {
-        println!("🧪 测试完整 KZG 工作流程...");
+        println!(" 测试完整 KZG 工作流程...");
         
         if let Ok(settings) = load_trusted_setup_from_file() {
             let blob = create_test_blob()?;
@@ -613,9 +613,9 @@ mod tests {
             let is_valid = verify_blob_kzg_proof_rust(&blob, &commitment, &proof, &settings)?;
             
             assert!(is_valid, "完整的 KZG 工作流程应该验证成功");
-            println!("✅ 完整 KZG 工作流程测试通过!");
+            println!(" 完整 KZG 工作流程测试通过!");
         } else {
-            println!("⚠️  跳过 KZG 工作流程测试 (未找到受信任设置文件)");
+            println!("  跳过 KZG 工作流程测试 (未找到受信任设置文件)");
         }
         
         Ok(())
@@ -632,7 +632,7 @@ mod tests {
 // cargo test --example hello_kzg -- --nocapture
 ```
 
-### 📊 性能分析
+###  性能分析
 
 ```rust
 use std::time::Instant;
@@ -667,22 +667,22 @@ fn benchmark_kzg_operations() -> Result<(), Box<dyn std::error::Error>> {
 
 ---
 
-## 📚 本章总结
+##  本章总结
 
 通过本章学习，你已经：
 
-### ✅ 完成的任务
+###  完成的任务
 1. **环境搭建**: 安装 Rust、克隆项目、编译代码
 2. **第一个程序**: 编写并运行完整的 KZG 示例
 3. **错误处理**: 学会诊断和解决常见问题
 4. **调试技能**: 掌握调试器、日志、测试的使用
 
-### 🎯 核心概念
+###  核心概念
 - **受信任设置**: KZG 方案的基础设施
 - **Blob 数据**: 多项式求值的载体
 - **承诺-证明-验证**: KZG 的三个核心步骤
 
-### 🚀 下章预告
+###  下章预告
 
 第11章将深入探讨 **高级 API 使用指南**，包括：
 - 受信任设置的深度管理
@@ -690,7 +690,7 @@ fn benchmark_kzg_operations() -> Result<(), Box<dyn std::error::Error>> {
 - 批量操作的优化技巧
 - 内存管理和性能调优
 
-### 💡 练习建议
+###  练习建议
 
 1. **修改示例**: 尝试改变 blob 的大小和内容
 2. **性能测试**: 比较不同数据大小的性能差异

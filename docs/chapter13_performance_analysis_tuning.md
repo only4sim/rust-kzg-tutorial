@@ -6,7 +6,7 @@
 
 ## 13.1 性能分析基础理论
 
-### 🎯 性能分析的重要性
+###  性能分析的重要性
 
 在密码学库开发中，性能分析和优化至关重要，因为：
 
@@ -15,7 +15,7 @@
 3. **资源限制**: 节点硬件资源有限
 4. **规模化需求**: 需要处理大量并发请求
 
-### 📊 性能指标体系
+###  性能指标体系
 
 #### 时间复杂度指标
 ```rust
@@ -40,7 +40,7 @@ Operations {
 
 ## 13.2 微基准测试框架
 
-### 🔬 Criterion.rs 基准测试
+###  Criterion.rs 基准测试
 
 Criterion 是 Rust 生态中最专业的基准测试库：
 
@@ -121,7 +121,7 @@ criterion_group!(benches, kzg_benchmark_suite);
 criterion_main!(benches);
 ```
 
-### 📈 性能回归检测
+###  性能回归检测
 
 ```rust
 /// 性能回归检测框架
@@ -164,7 +164,7 @@ impl PerformanceRegression {
 
 ## 13.3 内存分析与优化
 
-### 🧠 内存使用模式分析
+###  内存使用模式分析
 
 #### Valgrind 集成
 ```toml
@@ -238,7 +238,7 @@ impl MemoryAnalyzer {
 }
 ```
 
-### 💾 缓存策略优化
+###  缓存策略优化
 
 #### LRU 缓存实现
 ```rust
@@ -321,7 +321,7 @@ impl AdaptiveCache {
 
 ## 13.4 并发性能优化
 
-### 🚀 并行计算策略
+###  并行计算策略
 
 #### Rayon 并行处理
 ```rust
@@ -432,7 +432,7 @@ impl OptimizedSharedState {
 
 ## 13.5 算法层面优化
 
-### ⚡ 数学计算优化
+###  数学计算优化
 
 #### 预计算策略
 ```rust
@@ -560,7 +560,7 @@ impl BatchOptimizer {
 
 ## 13.6 系统级调优
 
-### 🔧 编译器优化
+###  编译器优化
 
 #### Cargo 配置优化
 ```toml
@@ -614,7 +614,7 @@ pub fn optimized_field_multiplication(a: &Fr, b: &Fr) -> Fr {
 }
 ```
 
-### 🖥️ 硬件特性利用
+### ️ 硬件特性利用
 
 #### CPU 缓存优化
 ```rust
@@ -675,7 +675,7 @@ impl NumaOptimizer {
 
 ## 13.7 性能监控与诊断
 
-### 📊 实时性能监控
+###  实时性能监控
 
 #### 性能指标收集
 ```rust
@@ -831,7 +831,7 @@ pub struct BottleneckReport {
 
 ## 13.8 高级调优技术
 
-### 🎛️ 动态参数调整
+### ️ 动态参数调整
 
 #### 自适应算法选择
 ```rust
@@ -970,7 +970,7 @@ impl IntelligentLoadBalancer {
 
 ## 13.9 性能测试最佳实践
 
-### 🧪 测试环境配置
+###  测试环境配置
 
 #### 稳定测试环境
 ```rust
@@ -1009,7 +1009,7 @@ impl TestEnvironmentManager {
         clear_system_caches()?;
         
         self.environment_locked = true;
-        println!("✅ Test environment locked for stable performance measurement");
+        println!(" Test environment locked for stable performance measurement");
         
         Ok(())
     }
@@ -1025,7 +1025,7 @@ impl TestEnvironmentManager {
         set_process_priority(ProcessPriority::Normal)?;
         
         self.environment_locked = false;
-        println!("✅ Test environment restored");
+        println!(" Test environment restored");
         
         Ok(())
     }
@@ -1130,7 +1130,7 @@ pub struct StatisticalSummary {
 
 ## 13.10 实际应用案例分析
 
-### 📊 EIP-4844 性能优化案例
+###  EIP-4844 性能优化案例
 
 #### 场景分析
 ```rust
@@ -1216,7 +1216,7 @@ impl Eip4844Optimizer {
 }
 ```
 
-### 🎯 性能优化效果分析
+###  性能优化效果分析
 
 #### 优化前后对比
 ```rust
@@ -1279,7 +1279,7 @@ pub struct OptimizationReport {
 
 ## 13.11 故障排除与调试
 
-### 🔍 性能问题诊断
+###  性能问题诊断
 
 #### 性能问题分类
 ```rust
@@ -1378,7 +1378,7 @@ pub struct DiagnosisReport {
 
 ## 13.12 未来发展趋势
 
-### 🚀 新兴优化技术
+###  新兴优化技术
 
 #### 量子加速潜力
 ```rust
@@ -1466,7 +1466,7 @@ impl MLPerformanceOptimizer {
 
 ## 13.13 总结与最佳实践
 
-### ✅ 性能优化检查清单
+###  性能优化检查清单
 
 #### 开发阶段
 - [ ] 使用 Criterion.rs 建立基准测试
@@ -1489,7 +1489,7 @@ impl MLPerformanceOptimizer {
 - [ ] 故障诊断机制
 - [ ] 容量规划和预测
 
-### 🎯 关键性能指标 (KPI)
+###  关键性能指标 (KPI)
 
 | 指标类别 | 具体指标 | 目标值 | 监控方法 |
 |----------|----------|--------|----------|
@@ -1499,7 +1499,7 @@ impl MLPerformanceOptimizer {
 | **缓存** | 缓存命中率 | > 90% | 缓存统计 |
 | **错误率** | 操作失败率 | < 0.1% | 错误监控 |
 
-### 📖 学习建议
+###  学习建议
 
 1. **理论基础**: 深入理解算法复杂度和数学原理
 2. **工具掌握**: 熟练使用性能分析工具
@@ -1509,7 +1509,7 @@ impl MLPerformanceOptimizer {
 
 ---
 
-## 📚 延伸阅读
+##  延伸阅读
 
 - **《Computer Systems: A Programmer's Perspective》** - 系统级性能优化
 - **《The Art of Computer Programming》** - 算法分析与优化
@@ -1521,4 +1521,4 @@ impl MLPerformanceOptimizer {
 
 ---
 
-*📝 本章完成了 Rust KZG 库性能分析与调优的完整指南，涵盖了从基础理论到高级技术的全方位内容。下一章我们将探讨安全性分析与加固技术。*
+* 本章完成了 Rust KZG 库性能分析与调优的完整指南，涵盖了从基础理论到高级技术的全方位内容。下一章我们将探讨安全性分析与加固技术。*

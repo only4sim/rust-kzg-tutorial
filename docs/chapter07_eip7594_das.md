@@ -1,6 +1,6 @@
 # 第7章：数据可用性采样 (EIP-7594 DAS)
 
-## 🎯 学习目标
+##  学习目标
 
 通过本章学习，你将：
 - 深入理解 EIP-7594 PeerDAS 的设计原理和技术规范
@@ -13,7 +13,7 @@
 
 ## 7.1 EIP-7594 PeerDAS 规范解读
 
-### 📋 从 EIP-4844 到 EIP-7594 的演进
+###  从 EIP-4844 到 EIP-7594 的演进
 
 EIP-7594 (PeerDAS) 是对 EIP-4844 的重要扩展，主要解决以下问题：
 
@@ -36,7 +36,7 @@ pub const SAMPLES_PER_SLOT: usize = 16;               // 每个时隙需要采�
 pub const CUSTODY_REQUIREMENT: usize = 64;            // 每个节点需要保管的 cell 数
 ```
 
-### 🔄 PeerDAS 核心概念
+###  PeerDAS 核心概念
 
 #### 1. Cell 分片机制
 PeerDAS 将每个 blob 扩展并分割为多个 "cell"：
@@ -122,7 +122,7 @@ pub struct CellResponse {
 
 ## 7.2 Cell 处理与恢复算法
 
-### 🧮 Reed-Solomon 编码扩展
+###  Reed-Solomon 编码扩展
 
 DAS 的核心是将原始 blob 通过 Reed-Solomon 编码扩展一倍：
 
@@ -163,7 +163,7 @@ where
 }
 ```
 
-### 🔄 Cell 恢复算法
+###  Cell 恢复算法
 
 从部分 cell 恢复完整的扩展 blob：
 
@@ -207,7 +207,7 @@ where
 }
 ```
 
-### ✅ 批量验证优化
+###  批量验证优化
 
 批量验证多个 cell 的 KZG 证明：
 
@@ -246,7 +246,7 @@ where
 
 ## 7.3 性能优化与多后端支持
 
-### ⚡ 后端性能比较
+###  后端性能比较
 
 rust-kzg 库支持多种密码学后端，性能特点如下：
 
@@ -300,7 +300,7 @@ fn benchmark_blst_backend() -> Result<BackendBenchmark, Box<dyn std::error::Erro
 }
 ```
 
-### 🔧 性能优化策略
+###  性能优化策略
 
 #### 1. 并行计算优化
 ```rust
@@ -394,7 +394,7 @@ impl<B: EcBackend> CellMemoryPool<B> {
 
 ## 7.4 网络层集成考量
 
-### 🌐 P2P 网络中的 Cell 传播
+###  P2P 网络中的 Cell 传播
 
 #### 1. 分布式存储策略
 ```rust
@@ -488,7 +488,7 @@ impl DASNetworkClient {
 }
 ```
 
-### 🛡️ 恶意节点检测与防护
+###  恶意节点检测与防护
 
 #### 1. 响应验证机制
 ```rust
@@ -617,9 +617,9 @@ impl RedundantRequestManager {
 
 ---
 
-## 📊 实际应用场景分析
+##  实际应用场景分析
 
-### 🔍 轻节点数据可用性验证
+###  轻节点数据可用性验证
 
 #### 场景描述
 轻节点需要验证以太坊区块中的 blob 数据可用性，但无法下载完整数据。
@@ -724,7 +724,7 @@ where
 }
 ```
 
-### 🚀 大规模网络性能优化
+###  大规模网络性能优化
 
 #### 网络拓扑优化
 ```rust
@@ -807,7 +807,7 @@ impl NetworkTopologyOptimizer {
 
 ---
 
-## 🎯 章节总结
+##  章节总结
 
 ### 核心知识点回顾
 
@@ -831,7 +831,7 @@ impl NetworkTopologyOptimizer {
    - 大规模网络需要多层次的优化策略
    - 性能监控和故障恢复机制至关重要
 
-### 🚀 下一步学习
+###  下一步学习
 
 完成本章后，建议：
 1. 运行示例代码，观察 DAS 算法的实际性能
@@ -839,7 +839,7 @@ impl NetworkTopologyOptimizer {
 3. 分析网络环境对 DAS 性能的影响
 4. 进入第8章学习 BLST 后端的深度优化技术
 
-### 📝 练习建议
+###  练习建议
 
 1. 实现一个简化的 DAS 模拟器
 2. 比较不同后端在 Cell 计算上的性能差异

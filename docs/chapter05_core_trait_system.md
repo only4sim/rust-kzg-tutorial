@@ -6,7 +6,7 @@
 
 ## 5.1 密码学原语 Trait 设计
 
-### 🔬 Fr Trait：有限域元素抽象
+###  Fr Trait：有限域元素抽象
 
 有限域（Finite Field）是密码学的基础数学结构，`Fr` Trait 为所有有限域运算提供了统一的抽象接口。
 
@@ -178,7 +178,7 @@ fn to_bytes_vec(&self) -> Vec<u8> {
 }
 ```
 
-### 📐 域运算的数学正确性
+###  域运算的数学正确性
 
 #### Montgomery 形式的内部表示
 
@@ -225,7 +225,7 @@ impl Fr for MongoFr {
 impl Fr for SecureFr {
     fn equals(&self, other: &Self) -> bool {
         // 错误的实现：容易受到时序攻击
-        // self.limbs == other.limbs  // ❌ 短路评估泄露信息
+        // self.limbs == other.limbs  //  短路评估泄露信息
         
         // 正确的实现：常数时间比较
         let mut result = 0u8;
@@ -247,7 +247,7 @@ impl Fr for SecureFr {
 
 ## 5.2 椭圆曲线群 Trait 设计
 
-### 🎯 G1 Trait：主群抽象
+###  G1 Trait：主群抽象
 
 椭圆曲线群 G1 是 KZG 承诺方案的核心，所有承诺值都是 G1 群中的元素。
 
@@ -445,7 +445,7 @@ impl G1 for OptimizedG1 {
 }
 ```
 
-### 🔗 G2 Trait：配对群抽象
+###  G2 Trait：配对群抽象
 
 G2 是椭圆曲线的扭转群，用于配对运算和验证。
 
@@ -487,7 +487,7 @@ impl G2 for BLS12_381_G2 {
 
 ## 5.3 KZG 设置与操作 Trait
 
-### 🛠️ KZGSettings Trait：系统配置抽象
+###  KZGSettings Trait：系统配置抽象
 
 `KZGSettings` 是整个 KZG 系统的核心配置接口，封装了受信任设置和所有 KZG 操作。
 
@@ -672,7 +672,7 @@ impl<TFr: Fr, TG1: G1, TG2: G2> TrustedSetup<TFr, TG1, TG2> {
 }
 ```
 
-### 🔄 FFTSettings Trait：多项式运算抽象
+###  FFTSettings Trait：多项式运算抽象
 
 FFT（快速傅里叶变换）是 KZG 中多项式运算的基础。
 
@@ -687,7 +687,7 @@ pub trait FFTSettings<TFr: Fr>: Clone + Sync + Send {
     /// 获取单位根的逆元
     fn get_inverse_root_of_unity(&self, k: usize) -> Result<TFr, String>;
     
-    /// 前向 FFT：系数表示 → 值表示
+    /// 前向 FFT：系数表示  值表示
     fn fft(&self, coeffs: &mut [TFr], inverse: bool) -> Result<(), String>;
     
     /// 多项式乘法（通过 FFT）
@@ -764,7 +764,7 @@ impl<TFr: Fr> FFTSettings<TFr> for ConcreteFFTSettings<TFr> {
 
 ## 5.4 实际代码走读
 
-### 📖 从 kzg/src/lib.rs 开始的完整解析
+###  从 kzg/src/lib.rs 开始的完整解析
 
 让我们走读实际的代码，理解 Trait 系统的具体实现：
 
@@ -996,7 +996,7 @@ where
 }
 ```
 
-### 🔍 泛型约束的最佳实践
+###  泛型约束的最佳实践
 
 #### 约束的分层设计
 
@@ -1098,25 +1098,25 @@ where
 
 ---
 
-## 📚 本章小结
+##  本章小结
 
 本章深入探讨了 `rust-kzg` 项目的核心 Trait 系统设计：
 
-### 🎯 设计哲学总结
+###  设计哲学总结
 
-1. **抽象层次分明**: Fr → G1/G2 → KZGSettings 的清晰层次
+1. **抽象层次分明**: Fr  G1/G2  KZGSettings 的清晰层次
 2. **类型安全**: 编译时确保数学运算的正确性
 3. **性能优先**: 零成本抽象，运行时无额外开销
 4. **可扩展性**: 插件式设计，易于添加新后端
 
-### 🔧 关键设计决策
+###  关键设计决策
 
 - **固定大小数组**: 避免堆分配，优化性能
 - **泛型约束**: 在编译时确保类型兼容性
 - **关联类型**: 简化复杂类型关系的表达
 - **默认实现**: 减少代码重复，提高一致性
 
-### 🚀 下一步学习
+###  下一步学习
 
 在下一章中，我们将学习模块划分与依赖管理：
 - Cargo 工作区的组织策略

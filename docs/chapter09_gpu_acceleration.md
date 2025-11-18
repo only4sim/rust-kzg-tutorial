@@ -1,6 +1,6 @@
 # 第9章：GPU 加速与高性能优化
 
-## 🎯 学习目标
+##  学习目标
 
 通过本章学习，你将：
 - 理解 GPU 并行计算架构和 CUDA 编程模型
@@ -13,7 +13,7 @@
 
 ## 9.1 GPU 并行计算基础理论
 
-### 📊 GPU vs CPU 架构对比
+###  GPU vs CPU 架构对比
 
 #### 硬件架构差异
 
@@ -31,7 +31,7 @@ CPU 设计哲学: 延迟优化 (Latency Optimized)
 
 GPU 设计哲学: 吞吐量优化 (Throughput Optimized)  
 ┌───┬───┬───┬───┬───┬───┬───┬───┐
-│ PE│ PE│ PE│ PE│ PE│ PE│ PE│ PE│ ← 流处理器
+│ PE│ PE│ PE│ PE│ PE│ PE│ PE│ PE│  流处理器
 ├───┼───┼───┼───┼───┼───┼───┼───┤
 │ PE│ PE│ PE│ PE│ PE│ PE│ PE│ PE│
 ├───┼───┼───┼───┼───┼───┼───┼───┤
@@ -65,7 +65,7 @@ fn parallel_scalar_multiplication(
 }
 ```
 
-### 🔧 CUDA 编程模型深度解析
+###  CUDA 编程模型深度解析
 
 #### 层次化并行结构
 
@@ -138,7 +138,7 @@ impl GPUContext {
 
 ## 9.2 SPPARK 框架深度集成
 
-### 🚀 SPPARK 架构分析
+###  SPPARK 架构分析
 
 SPPARK (Supranational Parallel Acceleration with RUST Kryptography) 是 Supranational 公司开发的高性能 GPU 加速框架，专门针对椭圆曲线密码学运算进行优化。
 
@@ -182,7 +182,7 @@ parallel = ["rayon"]
 criterion = { version = "0.5", features = ["html_reports"] }
 ```
 
-### 🔧 SPPARK 集成实现
+###  SPPARK 集成实现
 
 #### 基础类型映射
 
@@ -371,7 +371,7 @@ impl MemoryPool {
 
 ## 9.3 性能基准测试与对比分析
 
-### 📊 测试环境配置
+###  测试环境配置
 
 为了获得准确的性能数据，我们需要建立标准化的测试环境：
 
@@ -527,7 +527,7 @@ fn benchmark_fft_performance(c: &mut Criterion) {
 }
 ```
 
-### 📈 性能数据分析
+###  性能数据分析
 
 基于实际测试的性能数据（示例数据，实际数据需要在特定硬件上测试）：
 
@@ -560,7 +560,7 @@ fn benchmark_fft_performance(c: &mut Criterion) {
 | 16384    | 2.31ms     | 0.52ms       | 4.44x  | 401 GB/s |
 | 32768    | 4.89ms     | 0.71ms       | 6.89x  | 588 GB/s |
 
-### 🎯 性能优化建议
+###  性能优化建议
 
 基于基准测试结果，我们可以制定以下优化策略：
 
@@ -637,7 +637,7 @@ impl PerformanceProfile {
 
 ## 9.4 生产环境部署与最佳实践
 
-### 🏗️ GPU 集群配置指南
+###  GPU 集群配置指南
 
 在生产环境中部署 GPU 加速的 KZG 系统需要考虑多个因素：
 
@@ -777,7 +777,7 @@ spec:
   type: LoadBalancer
 ```
 
-### 💡 性能监控与调优
+###  性能监控与调优
 
 #### 实时性能监控
 
@@ -965,7 +965,7 @@ pub enum TuningAdjustment {
 
 ## 9.5 错误处理与故障恢复
 
-### 🛡️ 健壮的错误处理机制
+###  健壮的错误处理机制
 
 GPU 计算环境比 CPU 更容易出现各种错误，需要完善的错误处理：
 
@@ -1140,7 +1140,7 @@ impl CircuitBreaker {
 
 ---
 
-## 🎯 章节总结
+##  章节总结
 
 通过本章的学习，我们深入了解了：
 
@@ -1172,7 +1172,7 @@ impl CircuitBreaker {
 - **性能权衡决策**: 根据数据规模和硬件配置选择最优后端
 - **工程实践经验**: 生产环境中的部署、监控和维护策略
 
-### 🚀 实际运行结果
+###  实际运行结果
 
 运行示例代码 `examples/chapter09_gpu_acceleration.rs` 可以观察到以下性能表现：
 
@@ -1198,18 +1198,18 @@ impl CircuitBreaker {
 #### 实时监控展示
 
 ```
-📈 [ 3s] GPU 利用率: 99.9%, 内存使用: 72.4%, 温度: 69°C
-📈 [ 6s] GPU 利用率: 74.2%, 内存使用: 55.4%, 温度: 73°C  
-📈 [ 9s] GPU 利用率: 40.7%, 内存使用: 41.9%, 温度: 77°C
+ [ 3s] GPU 利用率: 99.9%, 内存使用: 72.4%, 温度: 69°C
+ [ 6s] GPU 利用率: 74.2%, 内存使用: 55.4%, 温度: 73°C  
+ [ 9s] GPU 利用率: 40.7%, 内存使用: 41.9%, 温度: 77°C
 ```
 
 ### 最佳实践建议
 
 #### 何时使用 GPU 加速
 
-- ✅ **推荐场景**: 点数量 ≥ 1024，批量处理，生产环境
-- ⚠️ **谨慎使用**: 点数量 < 512，交互式应用，内存受限环境
-- ❌ **不推荐**: 单次小规模计算，开发调试阶段
+-  **推荐场景**: 点数量 ≥ 1024，批量处理，生产环境
+-  **谨慎使用**: 点数量 < 512，交互式应用，内存受限环境
+-  **不推荐**: 单次小规模计算，开发调试阶段
 
 #### 性能优化策略
 
@@ -1228,5 +1228,5 @@ GPU 加速技术为 KZG 承诺计算带来了革命性的性能提升，特别�
 
 ---
 
-*📝 本章完成时间: 2025年9月22日*  
-*🔗 相关资源: [SPPARK GitHub](https://github.com/supranational/sppark), [CUDA 编程指南](https://docs.nvidia.com/cuda/)*
+* 本章完成时间: 2025年9月22日*  
+* 相关资源: [SPPARK GitHub](https://github.com/supranational/sppark), [CUDA 编程指南](https://docs.nvidia.com/cuda/)*

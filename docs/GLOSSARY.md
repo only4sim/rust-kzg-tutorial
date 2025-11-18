@@ -5,17 +5,17 @@
 
 ---
 
-## 📚 使用说明 / How to Use
+## 使用说明 / How to Use
 
 - **按字母顺序排列** (中文拼音)
-- **标记**: 🔐 密码学 | 📐 数学 | ⛓️ 区块链 | 💻 编程
-- **难度**: ⭐ 基础 | ⭐⭐ 中级 | ⭐⭐⭐ 高级
+- **标记**: 密码学 | 数学 | 区块链 | 编程
+- **难度**: Basic | Intermediate | Advanced
 
 ---
 
 ## A
 
-### 🔐 Arkworks ⭐⭐
+### Arkworks - Intermediate
 **英文**: Arkworks
 **全称**: Arkworks Cryptography Library
 **解释**: 用 Rust 编写的零知识证明密码学库，是 rust-kzg 支持的后端之一。
@@ -26,7 +26,7 @@
 
 ## B
 
-### 🔐 Backend (后端) ⭐⭐
+### Backend (后端) - Intermediate
 **英文**: Backend
 **中文**: 密码学后端
 **解释**: rust-kzg 库使用的底层密码学实现。不同的后端提供相同的接口但使用不同的优化策略。
@@ -47,7 +47,7 @@ use rust_kzg_blst::{types::fr::FsFr, types::g1::FsG1};  // BLST 后端
 
 ---
 
-### 📐 BLS12-381 ⭐⭐⭐
+### BLS12-381 - Advanced
 **英文**: BLS12-381 Curve
 **全称**: Barreto-Lynn-Scott curve with embedding degree 12, 381-bit prime
 **解释**: 专为配对密码学设计的椭圆曲线，提供 128 位安全强度。
@@ -66,7 +66,7 @@ use rust_kzg_blst::{types::fr::FsFr, types::g1::FsG1};  // BLST 后端
 
 ---
 
-### 🔐 Blob ⭐
+### Blob - Basic
 **英文**: Blob
 **中文**: 数据块
 **全称**: Binary Large Object
@@ -87,7 +87,7 @@ let blob: [FsFr; 4096] = [FsFr::zero(); 4096];
 
 ---
 
-### 🔐 BLST ⭐⭐
+### BLST - Intermediate
 **英文**: BLST
 **全称**: BLS Signatures Library
 **解释**: 高性能的 BLS12-381 曲线实现，使用汇编优化。是 rust-kzg 的默认后端。
@@ -103,7 +103,7 @@ let blob: [FsFr; 4096] = [FsFr::zero(); 4096];
 
 ## C
 
-### 🔐 Cell ⭐⭐
+### Cell (单元) - Intermediate
 **英文**: Cell
 **中文**: 单元
 **解释**: 在 EIP-7594 PeerDAS 中，blob 被分成 128 个 cell，每个包含 64 个域元素。
@@ -118,7 +118,7 @@ let blob: [FsFr; 4096] = [FsFr::zero(); 4096];
 
 ---
 
-### 🔐 Commitment (承诺) ⭐⭐⭐
+### Commitment (承诺) - Advanced
 **英文**: Commitment
 **中文**: 承诺
 **解释**: 密码学承诺是对数据的简洁绑定，具有隐藏性和绑定性。KZG 承诺将多项式承诺为单个群元素。
@@ -143,7 +143,7 @@ let commitment = blob_to_kzg_commitment_rust(&blob, &settings)?;
 
 ---
 
-### 🔐 Constantine ⭐⭐
+### Constantine - Intermediate
 **英文**: Constantine
 **中文**: -
 **解释**: 用 Nim 语言编写的密码学库，rust-kzg 的支持后端之一。
@@ -154,7 +154,7 @@ let commitment = blob_to_kzg_commitment_rust(&blob, &settings)?;
 
 ## D
 
-### ⛓️ DAS (数据可用性采样) ⭐⭐
+### DAS (数据可用性采样) - Intermediate
 **英文**: Data Availability Sampling
 **中文**: 数据可用性采样
 **解释**: 一种技术，允许轻客户端通过随机采样小部分数据来验证整个数据集的可用性。
@@ -170,7 +170,7 @@ let commitment = blob_to_kzg_commitment_rust(&blob, &settings)?;
 
 ---
 
-### ⛓️ Danksharding ⭐⭐
+### Danksharding - Intermediate
 **英文**: Danksharding
 **中文**: Danksharding（以 Dankrad Feist 命名）
 **解释**: 以太坊的分片设计方案，使用 KZG 承诺和数据可用性采样。
@@ -186,7 +186,7 @@ let commitment = blob_to_kzg_commitment_rust(&blob, &settings)?;
 
 ## E
 
-### ⛓️ EIP-4844 ⭐
+### EIP-4844 - Basic
 **英文**: Ethereum Improvement Proposal 4844
 **中文**: 以太坊改进提案 4844
 **别名**: Proto-Danksharding
@@ -205,7 +205,7 @@ let commitment = blob_to_kzg_commitment_rust(&blob, &settings)?;
 
 ---
 
-### ⛓️ EIP-7594 ⭐⭐
+### EIP-7594 - Intermediate
 **英文**: Ethereum Improvement Proposal 7594
 **中文**: 以太坊改进提案 7594
 **别名**: PeerDAS
@@ -220,7 +220,7 @@ let commitment = blob_to_kzg_commitment_rust(&blob, &settings)?;
 
 ---
 
-### 🔐 Elliptic Curve (椭圆曲线) ⭐⭐
+### Elliptic Curve (椭圆曲线) - Intermediate
 **英文**: Elliptic Curve
 **中文**: 椭圆曲线
 **解释**: 满足特定方程的点的集合，具有群结构，用于现代密码学。
@@ -241,7 +241,7 @@ y² = x³ + ax + b (mod p)
 
 ## F
 
-### 📐 FFT (快速傅里叶变换) ⭐⭐⭐
+### FFT (快速傅里叶变换) - Advanced
 **英文**: Fast Fourier Transform
 **中文**: 快速傅里叶变换
 **解释**: 高效计算多项式求值和插值的算法。KZG 中用于多点求值。
@@ -259,7 +259,7 @@ y² = x³ + ax + b (mod p)
 
 ---
 
-### 📐 Field Element (域元素) ⭐⭐
+### Field Element (域元素) - Intermediate
 **英文**: Field Element
 **中文**: 域元素
 **类型**: `Fr` (Field of r elements)
@@ -277,7 +277,7 @@ let c = a.add(&b);  // 8
 
 ---
 
-### 🔐 Fiat-Shamir Transform ⭐⭐⭐
+### Fiat-Shamir Transform - Advanced
 **英文**: Fiat-Shamir Transform
 **中文**: Fiat-Shamir 变换
 **解释**: 将交互式证明转换为非交互式证明的技术，使用哈希函数模拟随机挑战。
@@ -292,7 +292,7 @@ let c = a.add(&b);  // 8
 
 ---
 
-### 📐 Fr ⭐⭐
+### Fr - Intermediate
 **英文**: Fr (Field of r elements)
 **中文**: 标量域
 **解释**: BLS12-381 曲线的标量域，包含大约 2^255 个元素。
@@ -315,7 +315,7 @@ let scalar: FsFr = FsFr::from_u64(42);
 
 ## G
 
-### 📐 G1, G2 ⭐⭐⭐
+### G1, G2 - Advanced
 **英文**: G1, G2 Groups
 **中文**: G1 群、G2 群
 **解释**: BLS12-381 曲线上的两个椭圆曲线群，用于配对密码学。
@@ -348,7 +348,7 @@ let g2_point: FsG2 = FsG2::generator();
 
 ---
 
-### 📐 Group (群) ⭐⭐
+### Group (群) - Intermediate
 **英文**: Group
 **中文**: 群
 **解释**: 一个集合配上一个运算，满足四个性质：封闭性、结合律、单位元、逆元。
@@ -366,7 +366,7 @@ let g2_point: FsG2 = FsG2::generator();
 
 ---
 
-### 💻 GPU Acceleration (GPU 加速) ⭐⭐
+### GPU Acceleration (GPU 加速) - Intermediate
 **英文**: GPU Acceleration
 **中文**: GPU 加速
 **解释**: 使用图形处理器加速密码学计算，特别是多标量乘法 (MSM)。
@@ -383,7 +383,7 @@ let g2_point: FsG2 = FsG2::generator();
 
 ## K
 
-### 🔐 KZG ⭐⭐⭐
+### KZG - Advanced
 **英文**: KZG (Kate-Zaverucha-Goldberg)
 **中文**: KZG 承诺方案
 **解释**: 一种多项式承诺方案，允许对多项式进行简洁的承诺和高效的证明。
@@ -405,7 +405,7 @@ let g2_point: FsG2 = FsG2::generator();
 
 ## M
 
-### 🔐 MCL ⭐⭐
+### MCL - Intermediate
 **英文**: MCL (Multi-precision and Cryptography Library)
 **中文**: -
 **解释**: C++ 实现的密码学库，rust-kzg 支持的后端之一。
@@ -414,7 +414,7 @@ let g2_point: FsG2 = FsG2::generator();
 
 ---
 
-### 📐 MSM (多标量乘法) ⭐⭐⭐
+### MSM (多标量乘法) - Advanced
 **英文**: Multi-Scalar Multiplication
 **中文**: 多标量乘法
 **解释**: 计算多个标量与对应群元素的乘法之和，KZG 中的核心计算。
@@ -437,7 +437,7 @@ MSM = s₁·P₁ + s₂·P₂ + ... + sₙ·Pₙ
 
 ## P
 
-### 🔐 Pairing (配对) ⭐⭐⭐
+### Pairing (配对) - Advanced
 **英文**: Pairing (Bilinear Pairing)
 **中文**: 双线性配对
 **解释**: 一个满足双线性性质的映射，用于 KZG 验证。
@@ -461,7 +461,7 @@ e([p(τ)]₁, [1]₂) = e([π]₁, [τ - z]₂) · e([y]₁, [1]₂)
 
 ---
 
-### ⛓️ PeerDAS ⭐⭐
+### PeerDAS - Intermediate
 **英文**: Peer Data Availability Sampling
 **中文**: 对等数据可用性采样
 **解释**: EIP-7594 的别名，通过 P2P 网络进行数据可用性采样。
@@ -470,7 +470,7 @@ e([p(τ)]₁, [1]₂) = e([π]₁, [τ - z]₂) · e([y]₁, [1]₂)
 
 ---
 
-### 📐 Polynomial (多项式) ⭐⭐
+### Polynomial (多项式) - Intermediate
 **英文**: Polynomial
 **中文**: 多项式
 **解释**: 形如 p(x) = aₙxⁿ + ... + a₁x + a₀ 的数学表达式。KZG 承诺的是多项式。
@@ -489,7 +489,7 @@ let coefficients: Vec<FsFr> = vec![a0, a1, a2, a3];  // p(x) = a3x³ + a2x² + a
 
 ---
 
-### 🔐 Proof (证明) ⭐⭐⭐
+### Proof (证明) - Advanced
 **英文**: Proof
 **中文**: 证明
 **解释**: 在 KZG 中，证明是一个 G1 点，用于证明多项式在某点的求值。
@@ -517,7 +517,7 @@ let proof = compute_blob_kzg_proof_rust(&blob, &commitment_bytes, &settings)?;
 
 ## R
 
-### 📐 Reed-Solomon 编码 ⭐⭐
+### Reed-Solomon 编码 - Intermediate
 **英文**: Reed-Solomon Encoding
 **中文**: Reed-Solomon 编码
 **解释**: 一种纠错码，用于数据可用性采样。可以从部分数据恢复完整数据。
@@ -535,7 +535,7 @@ let proof = compute_blob_kzg_proof_rust(&blob, &commitment_bytes, &settings)?;
 
 ---
 
-### ⛓️ Rollup ⭐
+### Rollup - Basic
 **英文**: Rollup
 **中文**: Rollup（卷叠）
 **解释**: Layer 2 扩展方案，将多个交易"卷起"成一个，在 Layer 1 发布简洁证明。
@@ -552,7 +552,7 @@ let proof = compute_blob_kzg_proof_rust(&blob, &commitment_bytes, &settings)?;
 
 ## S
 
-### 📐 Scalar (标量) ⭐⭐
+### Scalar (标量) - Intermediate
 **英文**: Scalar
 **中文**: 标量
 **解释**: 域元素，用于标量乘法。在 BLS12-381 中，标量来自 Fr 域。
@@ -569,7 +569,7 @@ let result = point.mul(&scalar);  // 7 · G₁
 
 ---
 
-### 🔐 SRS (结构化参考串) ⭐⭐⭐
+### SRS (结构化参考串) - Advanced
 **英文**: Structured Reference String
 **中文**: 结构化参考串
 **别名**: CRS (Common Reference String), Trusted Setup
@@ -590,7 +590,7 @@ SRS = ([1]₁, [τ]₁, [τ²]₁, ..., [τⁿ]₁, [1]₂, [τ]₂)
 
 ---
 
-### 🔐 SPPARK ⭐⭐
+### SPPARK - Intermediate
 **英文**: SPPARK
 **中文**: -
 **解释**: Supranational 开发的 GPU 加速库，用于椭圆曲线运算。
@@ -605,7 +605,7 @@ SRS = ([1]₁, [τ]₁, [τ²]₁, ..., [τⁿ]₁, [1]₂, [τ]₂)
 
 ## T
 
-### 💻 Trait ⭐⭐
+### Trait - Intermediate
 **英文**: Trait
 **中文**: Trait（特征）
 **解释**: Rust 中定义共享行为的语言特性。rust-kzg 使用 trait 抽象不同后端。
@@ -631,7 +631,7 @@ pub trait Fr: Clone + Copy + ... {
 
 ---
 
-### 🔐 Trusted Setup (可信设置) ⭐⭐⭐
+### Trusted Setup (可信设置) - Advanced
 **英文**: Trusted Setup
 **中文**: 可信设置
 **解释**: 生成 SRS 的过程，需要秘密值 τ，必须在生成后销毁。
@@ -653,7 +653,7 @@ pub trait Fr: Clone + Copy + ... {
 
 ## Z
 
-### 🔐 Zero-Knowledge (零知识) ⭐⭐⭐
+### Zero-Knowledge (零知识) - Advanced
 **英文**: Zero-Knowledge
 **中文**: 零知识
 **解释**: 一种证明性质，证明者可以向验证者证明某个陈述为真，而不泄露任何其他信息。
@@ -667,7 +667,7 @@ pub trait Fr: Clone + Copy + ... {
 
 ---
 
-### 🔐 zkSNARK ⭐⭐⭐
+### zkSNARK - Advanced
 **英文**: Zero-Knowledge Succinct Non-Interactive Argument of Knowledge
 **中文**: 零知识简洁非交互式知识论证
 **解释**: 一种证明系统，允许证明者简洁地证明计算的正确性。
@@ -686,7 +686,7 @@ pub trait Fr: Clone + Copy + ... {
 
 ---
 
-## 🔣 数学符号 / Mathematical Notation
+## 数学符号 / Mathematical Notation
 
 | 符号 | 含义 | 说明 |
 |------|------|------|
@@ -704,7 +704,7 @@ pub trait Fr: Clone + Copy + ... {
 
 ---
 
-## 🎯 缩写对照表 / Abbreviations
+## 缩写对照表 / Abbreviations
 
 | 缩写 | 全称 | 中文 |
 |------|------|------|
@@ -722,7 +722,7 @@ pub trait Fr: Clone + Copy + ... {
 
 ---
 
-## 📖 按章节索引 / Index by Chapter
+## 按章节索引 / Index by Chapter
 
 ### 第1章：密码学基础
 - Elliptic Curve (椭圆曲线)
@@ -766,12 +766,12 @@ pub trait Fr: Clone + Copy + ... {
 
 ---
 
-## 💡 学习建议 / Study Advice
+## 学习建议 / Study Advice
 
 **初学者路径**:
-1. 先理解基础术语（⭐）
-2. 逐步学习中级概念（⭐⭐）
-3. 最后掌握高级内容（⭐⭐⭐）
+1. 先理解基础术语（Basic）
+2. 逐步学习中级概念（Intermediate）
+3. 最后掌握高级内容（Advanced）
 
 **使用方法**:
 - 遇到不熟悉的术语时，快速查阅本术语表
@@ -779,9 +779,9 @@ pub trait Fr: Clone + Copy + ... {
 - 查看"相关术语"了解概念之间的联系
 
 **扩展资源**:
-- 📖 [Moonmath Manual](https://github.com/LeastAuthority/moonmath-manual)
-- 📖 [以太坊官方文档](https://ethereum.org/zh/developers/docs/)
-- 📖 [BLS12-381 For The Rest Of Us](https://hackmd.io/@benjaminion/bls12-381)
+- [Moonmath Manual](https://github.com/LeastAuthority/moonmath-manual)
+- [以太坊官方文档](https://ethereum.org/zh/developers/docs/)
+- [BLS12-381 For The Rest Of Us](https://hackmd.io/@benjaminion/bls12-381)
 
 ---
 

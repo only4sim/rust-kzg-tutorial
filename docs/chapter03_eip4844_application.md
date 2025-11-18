@@ -6,7 +6,7 @@
 
 ## 3.1 Proto-Danksharding 背景
 
-### 🌐 以太坊扩容问题
+###  以太坊扩容问题
 
 以太坊作为世界计算机面临着著名的**可扩展性三难困境**：去中心化、安全性和可扩展性难以同时实现。随着 DeFi、NFT 和 Web3 应用的爆发式增长，以太坊主网的拥堵和高昂的 Gas 费用成为了用户体验的瓶颈。
 
@@ -23,7 +23,7 @@ Rollup 的安全性依赖于交易数据的可用性，但以太坊主网的数�
 - 大型 Rollup 批次可能消耗数百万 gas
 - 数据成本占 Rollup 总成本的 90% 以上
 
-### 📦 Blob 数据结构设计
+###  Blob 数据结构设计
 
 EIP-4844 引入了**Blob（Binary Large Object）**作为新的数据类型，专门用于存储 Rollup 数据：
 
@@ -48,7 +48,7 @@ pub const BYTES_PER_PROOF: usize = 48;              // KZG 证明大小
 | **验证方式** | KZG 承诺 + 证明 | Merkle 树哈希 |
 | **容量** | 128KB/blob，最多 6 blobs/tx | 受 gas limit 限制 |
 
-### 📋 EIP-4844 技术规范解读
+###  EIP-4844 技术规范解读
 
 #### 核心组件
 
@@ -73,7 +73,7 @@ struct BlobSidecar {
 
 ## 3.2 KZG 在数据分片中的作用
 
-### 🔗 Blob 到承诺的转换
+###  Blob 到承诺的转换
 
 KZG 承诺为 blob 数据提供了紧凑且可验证的"指纹"：
 
@@ -119,13 +119,13 @@ fn poly_to_kzg_commitment<TFr, TG1, TKZGSettings>(
 }
 ```
 
-### 🔍 数据可用性采样 (DAS)
+###  数据可用性采样 (DAS)
 
 数据可用性采样是 EIP-4844 的核心创新，允许轻节点高效验证数据可用性：
 
 #### 采样原理
 
-1. **Reed-Solomon 编码**：将原始数据扩展一倍（4096 → 8192 样本）
+1. **Reed-Solomon 编码**：将原始数据扩展一倍（4096  8192 样本）
 2. **随机采样**：节点随机选择少量样本进行验证
 3. **统计保证**：采样足够样本可以高概率保证完整数据可用
 
@@ -182,7 +182,7 @@ pub fn verify_cell_kzg_proof<B: EcBackend>(
 }
 ```
 
-### 🔄 证明聚合优化
+###  证明聚合优化
 
 批量验证是提高网络效率的关键技术：
 
@@ -225,7 +225,7 @@ pub fn verify_blob_kzg_proof_batch_rust<TFr, TG1, TG2, TFFTSettings, TPoly, TKZG
 }
 ```
 
-### 📊 验证节点的工作流程
+###  验证节点的工作流程
 
 完整的验证节点需要处理以下流程：
 
@@ -321,7 +321,7 @@ impl DASampler {
 
 ## 3.3 性能要求与挑战
 
-### ⚡ 大规模数据处理需求
+###  大规模数据处理需求
 
 EIP-4844 的性能要求极为苛刻：
 
@@ -367,7 +367,7 @@ pub fn benchmark_verification_performance() -> Result<(), Box<dyn std::error::Er
 }
 ```
 
-### 🚀 实时性要求
+###  实时性要求
 
 区块链网络的实时性要求对 KZG 计算提出了严格的时延限制：
 
@@ -408,7 +408,7 @@ impl PerformanceProfiler {
     }
     
     fn print_performance_summary(&self) {
-        println!("\n📊 性能分析报告");
+        println!("\n 性能分析报告");
         println!("{}", "=".repeat(50));
         
         for (operation, times) in &self.metrics {
@@ -416,7 +416,7 @@ impl PerformanceProfiler {
             let min_time = times.iter().min().unwrap();
             let max_time = times.iter().max().unwrap();
             
-            println!("🔹 {:<20}: 平均 {:8.2}ms, 范围 [{:6.2}ms - {:6.2}ms]", 
+            println!(" {:<20}: 平均 {:8.2}ms, 范围 [{:6.2}ms - {:6.2}ms]", 
                     operation, 
                     avg_time.as_secs_f64() * 1000.0,
                     min_time.as_secs_f64() * 1000.0,
@@ -426,7 +426,7 @@ impl PerformanceProfiler {
 }
 ```
 
-### ⚖️ 并行化的必要性
+### ️ 并行化的必要性
 
 单核性能无法满足网络需求，必须充分利用多核并行：
 
@@ -470,7 +470,7 @@ pub fn parallel_das_sampling(
 }
 ```
 
-### 🎯 多后端支持的意义
+###  多后端支持的意义
 
 不同的椭圆曲线后端在不同场景下有各自的优势：
 
@@ -478,23 +478,23 @@ pub fn parallel_das_sampling(
 
 ```rust
 pub fn compare_backend_performance() -> Result<(), Box<dyn std::error::Error>> {
-    println!("🔬 多后端性能对比测试");
+    println!(" 多后端性能对比测试");
     println!("{}", "=".repeat(60));
     
     let test_blob = create_test_blob()?;
     
     // BLST 后端测试
-    println!("\n📦 BLST 后端:");
+    println!("\n BLST 后端:");
     let blst_settings = rust_kzg_blst::load_trusted_setup_from_file()?;
     benchmark_backend("BLST", &test_blob, &blst_settings)?;
     
     // Arkworks 后端测试
-    println!("\n📦 Arkworks 后端:");
+    println!("\n Arkworks 后端:");
     let arkworks_settings = rust_kzg_arkworks::load_trusted_setup_from_file()?;
     benchmark_backend("Arkworks", &test_blob, &arkworks_settings)?;
     
     // ZKCrypto 后端测试
-    println!("\n📦 ZKCrypto 后端:");
+    println!("\n ZKCrypto 后端:");
     let zkcrypto_settings = rust_kzg_zkcrypto::load_trusted_setup_from_file()?;
     benchmark_backend("ZKCrypto", &test_blob, &zkcrypto_settings)?;
     
@@ -525,11 +525,11 @@ fn benchmark_backend<T: KZGSettings>(
 
 ---
 
-## 📚 本章小结
+##  本章小结
 
 在本章中，我们深入探讨了 KZG 承诺方案在以太坊 EIP-4844 升级中的关键应用：
 
-### 🎯 核心要点回顾
+###  核心要点回顾
 
 1. **扩容背景**: EIP-4844 通过引入 Blob 数据类型，为 Rollup 提供了更便宜的数据可用性解决方案
 
@@ -543,14 +543,14 @@ fn benchmark_backend<T: KZGSettings>(
    - 大规模并行计算需求
    - 多后端支持的必要性
 
-### 🚀 下一步学习
+###  下一步学习
 
 在下一章中，我们将深入项目的架构设计，理解多后端支持的设计哲学和 Trait 抽象系统，这将帮助你：
 - 理解项目的整体架构思想
 - 掌握 Rust 中大型项目的组织方式
 - 学会设计可扩展的密码学库接口
 
-### 💡 实践建议
+###  实践建议
 
 1. **运行性能测试**: 使用本章提供的代码测试不同操作的性能
 2. **深入 EIP-4844**: 阅读官方 EIP 文档，理解技术细节

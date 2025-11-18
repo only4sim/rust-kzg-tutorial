@@ -1,10 +1,10 @@
 # 第6章：模块划分与依赖管理
 
-## 📖 章节概述
+##  章节概述
 
 深入分析 rust-kzg 项目的模块架构设计，理解大型密码学库的组织结构和依赖关系管理。本章将从软件工程的角度，探讨如何构建可扩展、可维护的密码学库。
 
-## 🎯 学习目标
+##  学习目标
 
 通过本章学习，您将：
 - 理解 rust-kzg 的完整模块架构
@@ -17,7 +17,7 @@
 
 ## 6.1 项目总体架构
 
-### 🏗️ rust-kzg 工作区结构
+###  rust-kzg 工作区结构
 
 rust-kzg 采用 Cargo 工作区 (Workspace) 架构，将不同后端实现分离为独立的 crate：
 
@@ -27,7 +27,7 @@ rust-kzg/
 ├── Cargo.lock              # 依赖锁定文件
 ├── readme.md               # 项目文档
 │
-├── kzg/                    # 🎯 核心 Trait 定义层
+├── kzg/                    #  核心 Trait 定义层
 │   ├── Cargo.toml
 │   ├── src/
 │   │   ├── lib.rs          # 库入口
@@ -39,7 +39,7 @@ rust-kzg/
 │   │       ├── c_bindings.rs # C 语言绑定
 │   │       └── eip_7594.rs   # EIP-7594 标准
 │
-├── blst/                   # 🚀 BLST 后端实现（生产推荐）
+├── blst/                   #  BLST 后端实现（生产推荐）
 │   ├── Cargo.toml
 │   ├── src/
 │   │   ├── lib.rs
@@ -54,29 +54,29 @@ rust-kzg/
 │   │   ├── kzg_proofs.rs   # KZG 证明算法
 │   │   └── ...
 │
-├── arkworks3/              # 🔬 Arkworks v0.3 后端
-├── arkworks4/              # 🔬 Arkworks v0.4 后端
-├── arkworks5/              # 🔬 Arkworks v0.5 后端
-├── zkcrypto/               # 🔬 ZKCrypto 后端
-├── constantine/            # 🔬 Constantine 后端
-├── mcl/                    # 🔬 MCL 后端
-├── ckzg/                   # 🔗 C-KZG 兼容层
+├── arkworks3/              #  Arkworks v0.3 后端
+├── arkworks4/              #  Arkworks v0.4 后端
+├── arkworks5/              #  Arkworks v0.5 后端
+├── zkcrypto/               #  ZKCrypto 后端
+├── constantine/            #  Constantine 后端
+├── mcl/                    #  MCL 后端
+├── ckzg/                   #  C-KZG 兼容层
 │
-├── kzg-bench/              # 📊 性能基准测试
-└── tasks/                  # 🔧 构建和维护脚本
+├── kzg-bench/              #  性能基准测试
+└── tasks/                  #  构建和维护脚本
 ```
 
-### 🎨 架构设计原则
+###  架构设计原则
 
 #### 1. **分层架构 (Layered Architecture)**
 ```
 应用层 (Application Layer)
-    ↓
-接口层 (Interface Layer) ← kzg crate
-    ↓
-实现层 (Implementation Layer) ← blst/arkworks/etc.
-    ↓
-底层库 (Low-level Libraries) ← BLST/Arkworks/etc.
+    
+接口层 (Interface Layer)  kzg crate
+    
+实现层 (Implementation Layer)  blst/arkworks/etc.
+    
+底层库 (Low-level Libraries)  BLST/Arkworks/etc.
 ```
 
 #### 2. **插件式后端系统**
@@ -93,7 +93,7 @@ rust-kzg/
 
 ## 6.2 核心模块详细分析
 
-### 📦 kzg Core Crate
+###  kzg Core Crate
 
 `kzg` crate 是整个项目的核心，定义了所有密码学操作的 Trait 接口：
 
@@ -178,7 +178,7 @@ pub const BYTES_PER_FIELD_ELEMENT: usize = 32;
 pub const FIELD_ELEMENTS_PER_BLOB: usize = 4096;
 ```
 
-### 🚀 BLST Backend Crate
+###  BLST Backend Crate
 
 `blst` crate 是推荐的生产环境后端，基于 BLST 库实现：
 
@@ -263,7 +263,7 @@ impl Fr for FsFr {
 
 ## 6.3 依赖管理策略
 
-### 📋 工作区 Cargo.toml 分析
+###  工作区 Cargo.toml 分析
 
 ```toml
 # rust-kzg/Cargo.toml - 工作区根配置
@@ -313,7 +313,7 @@ opt-level = 3
 debug = false
 ```
 
-### 🔗 各 Crate 的依赖配置
+###  各 Crate 的依赖配置
 
 #### kzg Core Crate
 ```toml
@@ -368,7 +368,7 @@ c_bindings = []
 cc = "1.0"
 ```
 
-### 🎯 依赖管理最佳实践
+###  依赖管理最佳实践
 
 #### 1. **版本策略**
 ```toml
@@ -431,7 +431,7 @@ pub use rust_kzg_arkworks as backend;
 
 ## 6.4 模块间接口设计
 
-### 🔌 接口抽象层设计
+###  接口抽象层设计
 
 #### 1. **核心 Trait 系统**
 ```rust
@@ -529,7 +529,7 @@ impl Default for KzgConfig {
 }
 ```
 
-### 🎨 API 设计模式
+###  API 设计模式
 
 #### 1. **Builder 模式**
 ```rust
@@ -621,7 +621,7 @@ pub trait KZGSettingsGeneric: Send + Sync {
 
 ## 6.5 扩展性设计
 
-### 🔧 插件架构实现
+###  插件架构实现
 
 #### 1. **动态后端加载**
 ```rust
@@ -720,7 +720,7 @@ pub struct CacheStats {
 }
 ```
 
-### 📈 性能优化架构
+###  性能优化架构
 
 #### 1. **多级缓存系统**
 ```rust
@@ -926,7 +926,7 @@ where
 
 ## 6.6 测试架构设计
 
-### 🧪 分层测试策略
+###  分层测试策略
 
 #### 1. **单元测试架构**
 ```rust
@@ -1043,7 +1043,7 @@ criterion_main!(benches);
 
 ## 6.7 文档和示例架构
 
-### 📚 文档组织结构
+###  文档组织结构
 
 ```
 rust-kzg/
@@ -1098,7 +1098,7 @@ rust-kzg/
     └── docs/                  # 教程文档
 ```
 
-### 📖 文档自动化生成
+###  文档自动化生成
 
 #### 1. **API 文档配置**
 ```toml
@@ -1175,9 +1175,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 ---
 
-## 📝 本章总结
+##  本章总结
 
-### 🎯 关键要点回顾
+###  关键要点回顾
 
 1. **模块化设计**：rust-kzg 采用工作区架构，核心 Trait 与具体实现分离
 2. **依赖管理**：统一版本控制，特性门控，条件编译
@@ -1185,7 +1185,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 4. **扩展性**：插件架构，多级缓存，预计算优化
 5. **测试策略**：分层测试，跨后端验证，性能基准
 
-### 💡 设计模式应用
+###  设计模式应用
 
 - **策略模式**：多后端实现选择
 - **工厂模式**：动态后端创建
@@ -1193,7 +1193,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 - **装饰者模式**：功能扩展
 - **观察者模式**：性能监控
 
-### 🚀 最佳实践
+###  最佳实践
 
 1. **清晰的职责分离**：每个 crate 都有明确的职责边界
 2. **统一的接口约定**：所有后端实现相同的 Trait
