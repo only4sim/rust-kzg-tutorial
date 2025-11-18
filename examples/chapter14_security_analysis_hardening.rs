@@ -93,6 +93,12 @@ pub struct SecureMemoryPool {
     next_id: usize,
 }
 
+impl Default for SecureMemoryPool {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl SecureMemoryPool {
     pub fn new() -> Self {
         Self {
@@ -188,6 +194,12 @@ pub struct FuzzTestSuite {
     timeout_count: usize,
 }
 
+impl Default for FuzzTestSuite {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl FuzzTestSuite {
     pub fn new() -> Self {
         Self {
@@ -244,6 +256,22 @@ impl FuzzTestSuite {
         
         results
     }
+
+    /// 报告模糊测试结果
+    /// Report fuzzing test results
+    pub fn report_results(&self) {
+        println!("\n📊 模糊测试结果 / Fuzz Test Results");
+        println!("  测试用例总数 / Total test cases: {}", self.test_cases.len());
+        println!("  检测到的崩溃 / Crashes detected: {}", self.crash_count);
+        println!("  超时次数 / Timeout count: {}", self.timeout_count);
+
+        if self.crash_count == 0 && self.timeout_count == 0 {
+            println!("✅ 未发现安全问题 / No security issues found");
+        } else {
+            println!("⚠️  发现潜在安全问题，需要进一步分析");
+            println!("   Potential security issues found, further analysis needed");
+        }
+    }
 }
 
 /// 模糊测试结果
@@ -266,8 +294,22 @@ impl FuzzResult {
     }
 }
 
-/// 模糊测试入口（需配合 cargo-fuzz 工具）
-#[cfg(fuzzing)]
+/// 模糊测试入口示例
+/// Fuzz Test Entry Point Example
+///
+/// 注意：这是一个教学示例，展示如何构建模糊测试基础设施
+/// Note: This is an educational example showing how to build fuzzing infrastructure
+///
+/// 在实际项目中，推荐使用以下工具：
+/// In real projects, use these tools instead:
+///   - cargo-fuzz: https://github.com/rust-fuzz/cargo-fuzz
+///   - AFL (American Fuzzy Lop): https://github.com/AFLplusplus/AFLplusplus
+///   - libFuzzer: https://llvm.org/docs/LibFuzzer.html
+///
+/// 使用方法 / Usage:
+///   cargo run --example chapter14_security_analysis_hardening
+///
+#[allow(dead_code)]
 pub fn fuzz_target(data: &[u8]) {
     // 测试常量时间比较函数
     let reference = [0u8; 32];

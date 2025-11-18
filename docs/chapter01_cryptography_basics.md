@@ -4,6 +4,212 @@
 
 ---
 
+## 前置知识要求 / Prerequisites
+
+在开始学习本教程之前，建议您具备以下知识基础。根据星级评估您的准备程度：
+
+### 📘 Rust 编程 / Rust Programming
+
+#### ⭐⭐⭐ 必需 (Required)
+- **基本语法**: 变量、函数、控制流、模式匹配
+- **所有权系统**: 借用、生命周期、所有权转移
+- **错误处理**: `Result<T, E>` 和 `?` 操作符
+- **基础类型**: `Vec`, `String`, `Option` 等
+
+**快速检查**: 如果你能理解并编写以下代码，说明基础知识已足够：
+```rust
+fn process_data(input: &[u8]) -> Result<Vec<u8>, String> {
+    if input.is_empty() {
+        return Err("输入不能为空".to_string());
+    }
+    Ok(input.iter().map(|&x| x.wrapping_mul(2)).collect())
+}
+```
+
+#### ⭐⭐ 推荐 (Recommended)
+- **Trait 和泛型**: 理解 trait 约束、泛型函数
+- **迭代器**: `map`, `filter`, `collect` 等常用方法
+- **模块系统**: `use`, `mod`, `pub` 的使用
+
+**为什么重要**: Rust KZG 库大量使用 trait 抽象（如 `Fr`, `G1`, `G2`），理解这些概念能帮助您更好地使用 API。
+
+#### ⭐ 可选 (Optional)
+- **异步编程**: `async`/`await` (仅第16章生产部署涉及)
+- **宏**: 声明宏和过程宏（理解即可）
+- **不安全代码**: `unsafe` 块（本教程不要求编写）
+
+**学习资源**:
+- 📖 [Rust 程序设计语言](https://doc.rust-lang.org/book/) (中文版)
+- 📖 [Rust By Example](https://doc.rust-lang.org/rust-by-example/)
+- 🎥 [Rust 官方教程视频](https://www.youtube.com/c/RustVideos)
+
+---
+
+### 🔢 数学基础 / Mathematics
+
+#### ⭐⭐⭐ 必需 (Required)
+- **模运算**: 同余、模逆元、费马小定理
+  - 示例: `(a + b) mod n`, `a^(-1) mod p`
+- **多项式基础**: 多项式求值、加法、乘法
+  - 示例: `p(x) = a₀ + a₁x + a₂x² + ...`
+
+**快速检查**: 如果您能回答以下问题，说明基础足够：
+- 什么是 `7^(-1) mod 11`？（答案: 8，因为 7 × 8 ≡ 1 (mod 11)）
+- 如何计算多项式 `p(x) = 2x² + 3x + 1` 在 `x = 5` 的值？（答案: 66）
+
+#### ⭐⭐ 推荐 (Recommended)
+- **群论基础**: 群、阿贝尔群、循环群的概念
+  - 理解群的四个性质：封闭性、结合律、单位元、逆元
+- **线性代数**: 向量、矩阵基本运算（有助于理解配对）
+- **离散对数问题**: 理解为什么计算离散对数困难
+
+**为什么重要**: KZG 承诺方案建立在椭圆曲线群和配对密码学之上，理解群论能让您深入理解原理而不仅是使用 API。
+
+#### ⭐ 有帮助 (Helpful)
+- **数论**: 素数、欧拉函数、中国剩余定理
+- **抽象代数**: 环、域的概念
+- **信息论**: 熵、随机性（理解安全性分析有帮助）
+
+**学习资源**:
+- 📖 [Moonmath Manual](https://github.com/LeastAuthority/moonmath-manual) - 零知识证明数学基础
+- 📖 [密码学中的数学](https://www.coursera.org/learn/crypto) - Coursera 课程
+- 📺 [3Blue1Brown 线性代数](https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab)
+
+---
+
+### ⛓️ 区块链知识 / Blockchain (Context)
+
+#### ⭐⭐ 推荐 (Recommended)
+- **以太坊基础**: 区块、交易、智能合约概念
+- **数据可用性问题**: 为什么 Layer 2 需要数据可用性保证
+- **Rollup 基础**: Optimistic Rollup vs ZK Rollup
+
+**为什么重要**: KZG 承诺在以太坊的 Proto-Danksharding (EIP-4844) 和 PeerDAS (EIP-7594) 中发挥关键作用，理解应用场景能提升学习动力。
+
+#### ⭐ 有帮助 (Helpful)
+- **Layer 2 扩展方案**: Rollup、State Channel、Plasma
+- **共识机制**: PoS、PoW 基础概念
+- **EVM**: 以太坊虚拟机工作原理
+
+**不需要**: 深入的 Solidity 编程或智能合约开发经验
+
+**学习资源**:
+- 📖 [以太坊官方文档](https://ethereum.org/zh/developers/docs/)
+- 📖 [EIP-4844 规范](https://eips.ethereum.org/EIPS/eip-4844)
+- 📺 [Vitalik 讲解 Danksharding](https://www.youtube.com/watch?v=N5p0TB77flM)
+
+---
+
+### 💻 开发环境 / Development Environment
+
+#### 必需的软件 / Required Software
+- **Rust**: 版本 1.70 或更高
+  ```bash
+  rustc --version  # 应显示 rustc 1.70.0 或更高
+  ```
+- **Cargo**: Rust 包管理器（随 Rust 安装）
+- **Git**: 版本控制（克隆教程代码）
+
+#### 推荐的工具 / Recommended Tools
+- **IDE/编辑器**:
+  - VS Code + rust-analyzer 插件（推荐）
+  - IntelliJ IDEA + Rust 插件
+  - Vim/Emacs + Rust 语言服务器
+- **终端**: 支持 UTF-8 和彩色输出
+- **系统**: Linux、macOS 或 Windows (WSL2)
+
+**安装验证**:
+运行我们提供的依赖检查脚本：
+```bash
+./scripts/check_dependencies.sh
+```
+
+---
+
+### 📚 推荐的学习路径 / Recommended Learning Paths
+
+根据您的背景，选择合适的学习路径：
+
+#### 路径 A: Rust 开发者（强 Rust，弱密码学）
+1. ✅ 直接开始第1章
+2. 📖 遇到数学概念时参考 Moonmath Manual
+3. 💡 重点关注代码实现和 API 使用
+4. 🎯 建议：第1章 → 第10章 → 第11章 → 回到第2章深入理论
+
+#### 路径 B: 密码学研究者（强数学，弱 Rust）
+1. 📖 先快速学习 Rust 基础（The Rust Book 前10章）
+2. ✅ 从第1章开始，重点理解数学原理
+3. 💻 代码部分先运行示例，再逐步理解实现
+4. 🎯 建议：Rust 基础 → 第1章 → 第2章 → 第10章实践
+
+#### 路径 C: 区块链开发者（强工程，中等数学）
+1. ✅ 第1章快速过一遍，理解大致概念
+2. 🎯 重点学习第3章（EIP-4844）和第7章（EIP-7594）
+3. 💻 第10-13章的实践部分
+4. 🎯 建议：第1章 → 第3章 → 第7章 → 第10章 → 第11章
+
+#### 路径 D: 完全初学者（学习所有内容）
+1. 📖 先学习 Rust（1-2周）
+2. 📐 补充数学基础（模运算、多项式）
+3. ⛓️ 了解区块链基本概念
+4. ✅ 系统学习本教程（4-6周）
+5. 🎯 建议：Rust Book → 第1章 → 第2章 → 第10章 → 后续章节
+
+---
+
+### ✅ 自我评估清单 / Self-Assessment Checklist
+
+在开始前，检查您是否：
+
+**Rust 能力**:
+- [ ] 能编写和运行基本的 Rust 程序
+- [ ] 理解借用和所有权规则
+- [ ] 会使用 `cargo build` 和 `cargo run`
+- [ ] 能阅读并理解 Rust 错误信息
+
+**数学能力**:
+- [ ] 知道什么是模运算和同余
+- [ ] 能计算简单的多项式求值
+- [ ] 了解群的基本概念（或愿意学习）
+
+**区块链背景**:
+- [ ] 知道以太坊是什么
+- [ ] 了解 Layer 2 扩展的必要性（可选但有帮助）
+
+**环境准备**:
+- [ ] 已安装 Rust 1.70+
+- [ ] 已克隆本教程仓库
+- [ ] 已运行 `./scripts/check_dependencies.sh` 验证环境
+
+**如果您勾选了至少8个，恭喜！您已准备好开始学习。** 🎉
+
+**如果勾选少于5个，建议先补充基础知识，这将使学习过程更加顺畅。**
+
+---
+
+### 💡 学习建议 / Study Tips
+
+1. **循序渐进**: 不要跳章节，每章都有前置依赖
+2. **动手实践**: 每个示例都要运行，修改参数观察结果
+3. **记录笔记**: 记录不理解的概念，稍后查阅
+4. **参与社区**: 遇到问题在 GitHub Issues 提问
+5. **复习总结**: 每学完一个部分，回顾关键概念
+
+---
+
+### 📞 获取帮助 / Getting Help
+
+- **GitHub Issues**: 报告错误或提问
+- **示例代码**: `examples/` 目录包含所有可运行示例
+- **文档**: `docs/` 目录包含详细的中文文档
+- **社区**: (如果有Discord/Telegram，添加链接)
+
+---
+
+现在，让我们开始学习密码学基础！🚀
+
+---
+
 ## 1.1 椭圆曲线密码学入门
 
 ### 🧮 椭圆曲线的数学原理
@@ -700,4 +906,4 @@ fn add_polynomials(f: &[FsFr], g: &[FsFr]) -> Vec<FsFr> {
 2. **理论思考**: 为什么椭圆曲线的双线性性质对 KZG 方案至关重要？
 3. **实验探索**: 比较不同度数多项式的承诺生成时间，观察 KZG 方案的简洁性优势
 
-**下一章**: [第2章：KZG 承诺方案深度剖析](chapter02_kzg_scheme.md)
+**下一章**: [第2章：KZG 承诺方案深度剖析](chapter02_kzg_deep_dive.md)

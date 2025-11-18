@@ -1,0 +1,22 @@
+# Rust KZG 本地开发配置示例
+# Local Development Configuration Example
+#
+# 如果需要修改 rust-kzg 源码，按以下步骤操作：
+# If you need to modify rust-kzg source code, follow these steps:
+#
+# 1. 克隆 rust-kzg 到父目录:
+#    Clone rust-kzg to parent directory:
+#    cd ..
+#    git clone https://github.com/grandinetech/rust-kzg.git
+#    cd rust-kzg-tutorial
+#
+# 2. 复制此文件为 .cargo/config.toml:
+#    Copy this file as .cargo/config.toml:
+#    cp .cargo/config.toml.example .cargo/config.toml
+#
+# 3. 取消下面的注释:
+#    Uncomment the lines below:
+
+# [patch."https://github.com/grandinetech/rust-kzg"]
+# kzg = { path = "../rust-kzg/kzg" }
+# rust-kzg-blst = { path = "../rust-kzg/blst" }

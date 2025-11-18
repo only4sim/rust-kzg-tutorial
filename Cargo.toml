@@ -11,9 +11,10 @@ keywords = ["cryptography", "kzg", "polynomial", "commitment", "tutorial"]
 categories = ["cryptography", "tutorial", "development-tools"]
 
 [dependencies]
-# 使用本地的 rust-kzg 库进行开发
-kzg = { path = "../rust-kzg/kzg" }
-rust-kzg-blst = { path = "../rust-kzg/blst" }
+# Rust KZG 密码学库 - 来自官方仓库
+# 高级用户可通过 .cargo/config.toml 覆盖为本地路径（见 .cargo/config.toml.example）
+kzg = { git = "https://github.com/grandinetech/rust-kzg.git", package = "kzg" }
+rust-kzg-blst = { git = "https://github.com/grandinetech/rust-kzg.git", package = "rust-kzg-blst" }
 
 # 用于示例的其他依赖
 log = "0.4"

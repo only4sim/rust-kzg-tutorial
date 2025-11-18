@@ -2,6 +2,9 @@
 /target/
 /Cargo.lock
 
+# Cargo 本地配置（不提交到版本控制）
+.cargo/config.toml
+
 # IDE 配置
 .vscode/
 .idea/
@@ -22,6 +25,7 @@ Thumbs.db
 
 # 中间开发文件
 /tmpdoc
+/scripts
 
 # 保留重要的计划文档
 !/tmpdoc/project_development_plan.md

@@ -280,7 +280,7 @@ fn demonstrate_data_parallelism(config: &ParallelConfig) -> Result<(), Box<dyn s
             .map(|(scalar_chunk, _point_chunk)| {
                 // 每个线程处理一个数据块（模拟计算）
                 let _computation_result = scalar_chunk.len(); // 模拟计算
-                ()
+                // 返回处理完成的标记
             })
             .collect();
         
@@ -337,9 +337,15 @@ fn demonstrate_task_parallelism(_config: &ParallelConfig) -> Result<(), Box<dyn 
         let elapsed = start.elapsed();
         let all_valid = results.iter().all(|&x| x);
         println!("     并行验证耗时: {:?}", elapsed);
-        println!("     验证结果: {} 个有效, {} 个无效", 
+        println!("     验证结果: {} 个有效, {} 个无效",
                 results.iter().filter(|&&x| x).count(),
                 results.iter().filter(|&&x| !x).count());
+
+        if !all_valid {
+            println!("     ⚠️  注意: 部分验证未通过（这是演示行为）");
+        } else {
+            println!("     ✅ 所有验证通过");
+        }
     }
     
     #[cfg(not(feature = "parallel"))]
